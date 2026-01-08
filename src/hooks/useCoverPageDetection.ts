@@ -1,8 +1,24 @@
-import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 
+// Safe location hook for SSR/Next.js compatibility
+function useSafeLocation() {
+  try {
+    const { useLocation } = require('react-router-dom');
+    return useLocation();
+  } catch (e) {
+    if (typeof window !== 'undefined') {
+      return {
+        pathname: window.location.pathname,
+        search: window.location.search,
+        hash: window.location.hash,
+      };
+    }
+    return { pathname: '/', search: '', hash: '' };
+  }
+}
+
 export const useCoverPageDetection = () => {
-  const location = useLocation();
+  const location = useSafeLocation();
   
   
   const isCoverPage = useMemo(() => {

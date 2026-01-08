@@ -2,8 +2,41 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import { UnifiedCart } from '@/components/common/UnifiedCart';
 import { SwipeUpNavigation } from '@/components/common/SwipeUpNavigation';
 import { useUnifiedCart } from '@/hooks/useUnifiedCart';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { useCoverPageDetection } from '@/hooks/useCoverPageDetection';
+
+// Safe router hooks that work in both Next.js and React Router contexts
+function useSafeNavigate() {
+  // Try React Router first
+  try {
+    const { useNavigate } = require('react-router-dom');
+    return useNavigate();
+  } catch (e) {
+    // Fallback to window.location for Next.js
+    return (path: string) => {
+      if (typeof window !== 'undefined') {
+        window.location.href = path;
+      }
+    };
+  }
+}
+
+function useSafeLocation() {
+  // Try React Router first
+  try {
+    const { useLocation } = require('react-router-dom');
+    return useLocation();
+  } catch (e) {
+    // Fallback to window.location for Next.js
+    if (typeof window !== 'undefined') {
+      return {
+        pathname: window.location.pathname,
+        search: window.location.search,
+        hash: window.location.hash,
+      };
+    }
+    return { pathname: '/', search: '', hash: '' };
+  }
+}
 
 interface GlobalCartContextType {
   isCartOpen: boolean;
@@ -30,8 +63,8 @@ export const GlobalCartProvider: React.FC<GlobalCartProviderProps> = ({ children
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [forceVisible, setForceVisible] = useState(true); // Always show cart
   const { cartItems, getTotalPrice, getTotalItems } = useUnifiedCart();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useSafeNavigate();
+  const location = useSafeLocation();
   const { isCoverPage } = useCoverPageDetection();
 
   // Remove excessive logging - only log on cart changes, not every render
