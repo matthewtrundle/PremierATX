@@ -1,0 +1,726 @@
+/**
+ * Party Planning Design Tokens
+ * Airbnb-inspired design system for the party planning platform
+ *
+ * Usage: Import this in components that use the party planning UI
+ * These tokens are scoped to .party-theme class to avoid conflicts
+ */
+
+/* Inter font - similar to Airbnb's Circular */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ============================================
+   DESIGN TOKENS (CSS Custom Properties)
+   ============================================ */
+
+:root {
+  /* Airbnb-inspired color palette */
+  --party-text: #222222;
+  --party-text-secondary: #717171;
+  --party-text-light: #b0b0b0;
+  --party-border: #dddddd;
+  --party-border-light: #ebebeb;
+  --party-background: #ffffff;
+  --party-surface: #f7f7f7;
+  --party-accent: #ff385c; /* Airbnb rausch red */
+  --party-accent-hover: #e31c5f;
+  --party-success: #008a05;
+  --party-warning: #c13515;
+
+  /* Partner theming - these get overridden by partner branding */
+  --party-primary: var(--partner-primary, #ff385c);
+  --party-primary-hover: var(--partner-primary-hover, #e31c5f);
+  --party-primary-light: var(--partner-primary-light, #fff0f3);
+
+  /* Typography */
+  --party-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --party-font-size-xs: 12px;
+  --party-font-size-sm: 14px;
+  --party-font-size-base: 16px;
+  --party-font-size-lg: 18px;
+  --party-font-size-xl: 20px;
+  --party-font-size-2xl: 24px;
+  --party-font-size-3xl: 32px;
+  --party-font-size-4xl: 48px;
+  --party-font-weight-normal: 400;
+  --party-font-weight-medium: 500;
+  --party-font-weight-semibold: 600;
+  --party-font-weight-bold: 700;
+  --party-font-weight-extrabold: 800;
+  --party-line-height: 1.5;
+  --party-line-height-tight: 1.25;
+
+  /* Spacing */
+  --party-space-xs: 4px;
+  --party-space-sm: 8px;
+  --party-space-md: 16px;
+  --party-space-lg: 24px;
+  --party-space-xl: 32px;
+  --party-space-2xl: 48px;
+  --party-space-3xl: 64px;
+
+  /* Border radius */
+  --party-radius-sm: 8px;
+  --party-radius-md: 12px;
+  --party-radius-lg: 16px;
+  --party-radius-xl: 24px;
+  --party-radius-full: 9999px;
+
+  /* Shadows - Airbnb style */
+  --party-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --party-shadow-card: 0 6px 20px rgba(0, 0, 0, 0.12);
+  --party-shadow-card-hover: 0 12px 28px rgba(0, 0, 0, 0.16);
+  --party-shadow-modal: 0 16px 32px rgba(0, 0, 0, 0.24);
+  --party-shadow-sticky: 0 2px 12px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --party-transition-fast: 150ms ease;
+  --party-transition-base: 200ms ease;
+  --party-transition-slow: 300ms ease;
+  --party-transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================
+   BASE STYLES (scoped to .party-theme)
+   ============================================ */
+
+.party-theme {
+  font-family: var(--party-font-family);
+  color: var(--party-text);
+  line-height: var(--party-line-height);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+
+.party-theme .party-heading-hero {
+  font-size: var(--party-font-size-4xl);
+  font-weight: var(--party-font-weight-extrabold);
+  line-height: var(--party-line-height-tight);
+  letter-spacing: -0.02em;
+}
+
+.party-theme .party-heading-1 {
+  font-size: var(--party-font-size-3xl);
+  font-weight: var(--party-font-weight-bold);
+  line-height: var(--party-line-height-tight);
+  letter-spacing: -0.01em;
+}
+
+.party-theme .party-heading-2 {
+  font-size: var(--party-font-size-2xl);
+  font-weight: var(--party-font-weight-semibold);
+  line-height: var(--party-line-height-tight);
+}
+
+.party-theme .party-heading-3 {
+  font-size: var(--party-font-size-xl);
+  font-weight: var(--party-font-weight-semibold);
+}
+
+.party-theme .party-body {
+  font-size: var(--party-font-size-base);
+  font-weight: var(--party-font-weight-normal);
+}
+
+.party-theme .party-body-sm {
+  font-size: var(--party-font-size-sm);
+  font-weight: var(--party-font-weight-normal);
+}
+
+.party-theme .party-caption {
+  font-size: var(--party-font-size-xs);
+  font-weight: var(--party-font-weight-medium);
+  color: var(--party-text-secondary);
+}
+
+/* ============================================
+   CARD STYLES (Airbnb-inspired)
+   ============================================ */
+
+.party-theme .party-card {
+  background: var(--party-background);
+  border-radius: var(--party-radius-lg);
+  overflow: hidden;
+  transition: box-shadow var(--party-transition-base), transform var(--party-transition-base);
+}
+
+.party-theme .party-card:hover {
+  box-shadow: var(--party-shadow-card-hover);
+}
+
+.party-theme .party-card-interactive {
+  cursor: pointer;
+}
+
+.party-theme .party-card-interactive:hover {
+  transform: translateY(-2px);
+}
+
+/* Card image container with 3:2 aspect ratio */
+.party-theme .party-card-image {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--party-surface);
+}
+
+.party-theme .party-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--party-transition-slow);
+}
+
+.party-theme .party-card-interactive:hover .party-card-image img {
+  transform: scale(1.05);
+}
+
+.party-theme .party-card-content {
+  padding: var(--party-space-md);
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.party-theme .party-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--party-space-sm);
+  font-family: var(--party-font-family);
+  font-size: var(--party-font-size-base);
+  font-weight: var(--party-font-weight-semibold);
+  padding: var(--party-space-md) var(--party-space-lg);
+  border-radius: var(--party-radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all var(--party-transition-fast);
+  min-height: 48px;
+}
+
+.party-theme .party-btn-primary {
+  background: var(--party-primary);
+  color: white;
+}
+
+.party-theme .party-btn-primary:hover {
+  background: var(--party-primary-hover);
+}
+
+.party-theme .party-btn-secondary {
+  background: var(--party-background);
+  color: var(--party-text);
+  border: 1px solid var(--party-text);
+}
+
+.party-theme .party-btn-secondary:hover {
+  background: var(--party-surface);
+}
+
+.party-theme .party-btn-ghost {
+  background: transparent;
+  color: var(--party-text);
+}
+
+.party-theme .party-btn-ghost:hover {
+  background: var(--party-surface);
+}
+
+/* ============================================
+   PILL/CHIP STYLES
+   ============================================ */
+
+.party-theme .party-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--party-space-xs);
+  padding: var(--party-space-sm) var(--party-space-md);
+  border-radius: var(--party-radius-full);
+  font-size: var(--party-font-size-sm);
+  font-weight: var(--party-font-weight-medium);
+  white-space: nowrap;
+  transition: all var(--party-transition-fast);
+  cursor: pointer;
+  border: 1px solid var(--party-border);
+  background: var(--party-background);
+  color: var(--party-text);
+}
+
+.party-theme .party-pill:hover {
+  border-color: var(--party-text);
+}
+
+.party-theme .party-pill-active {
+  background: var(--party-text);
+  color: var(--party-background);
+  border-color: var(--party-text);
+}
+
+/* ============================================
+   INPUT STYLES
+   ============================================ */
+
+.party-theme .party-input {
+  width: 100%;
+  padding: var(--party-space-md);
+  font-family: var(--party-font-family);
+  font-size: var(--party-font-size-base);
+  border: 1px solid var(--party-border);
+  border-radius: var(--party-radius-sm);
+  background: var(--party-background);
+  transition: border-color var(--party-transition-fast), box-shadow var(--party-transition-fast);
+  min-height: 48px;
+}
+
+.party-theme .party-input:focus {
+  outline: none;
+  border-color: var(--party-text);
+  box-shadow: 0 0 0 1px var(--party-text);
+}
+
+.party-theme .party-input::placeholder {
+  color: var(--party-text-secondary);
+}
+
+/* Search input with icon */
+.party-theme .party-search {
+  position: relative;
+}
+
+.party-theme .party-search-icon {
+  position: absolute;
+  left: var(--party-space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--party-text-secondary);
+  pointer-events: none;
+}
+
+.party-theme .party-search .party-input {
+  padding-left: calc(var(--party-space-md) * 3);
+}
+
+/* ============================================
+   BADGE STYLES
+   ============================================ */
+
+.party-theme .party-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--party-space-xs);
+  padding: var(--party-space-xs) var(--party-space-sm);
+  border-radius: var(--party-radius-sm);
+  font-size: var(--party-font-size-xs);
+  font-weight: var(--party-font-weight-semibold);
+}
+
+.party-theme .party-badge-featured {
+  background: linear-gradient(to right, #c4b5fd, #fbbf24);
+  color: var(--party-text);
+}
+
+.party-theme .party-badge-discount {
+  background: var(--party-primary-light);
+  color: var(--party-primary);
+}
+
+.party-theme .party-badge-category {
+  background: var(--party-surface);
+  color: var(--party-text-secondary);
+}
+
+/* ============================================
+   RATING STYLES
+   ============================================ */
+
+.party-theme .party-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--party-space-xs);
+  font-size: var(--party-font-size-sm);
+}
+
+.party-theme .party-rating-star {
+  color: var(--party-text);
+}
+
+.party-theme .party-rating-value {
+  font-weight: var(--party-font-weight-semibold);
+}
+
+.party-theme .party-rating-count {
+  color: var(--party-text-secondary);
+}
+
+/* ============================================
+   HERO SECTION STYLES
+   ============================================ */
+
+.party-theme .party-hero {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.party-theme .party-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.party-theme .party-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+}
+
+.party-theme .party-hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: white;
+  padding: var(--party-space-xl);
+}
+
+/* ============================================
+   SKELETON LOADING STYLES
+   ============================================ */
+
+.party-theme .party-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--party-surface) 25%,
+    var(--party-border-light) 50%,
+    var(--party-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: party-skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--party-radius-sm);
+}
+
+@keyframes party-skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.party-theme .party-skeleton-text {
+  height: 1em;
+  margin-bottom: var(--party-space-sm);
+}
+
+.party-theme .party-skeleton-title {
+  height: 1.5em;
+  width: 60%;
+  margin-bottom: var(--party-space-md);
+}
+
+.party-theme .party-skeleton-image {
+  aspect-ratio: 3 / 2;
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+/* Mobile-first breakpoints */
+@media (max-width: 640px) {
+  :root {
+    --party-font-size-4xl: 32px;
+    --party-font-size-3xl: 24px;
+    --party-font-size-2xl: 20px;
+  }
+
+  .party-theme .party-hero {
+    min-height: 300px;
+  }
+}
+
+@media (min-width: 768px) {
+  .party-theme .party-hero {
+    min-height: 480px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .party-theme .party-hero {
+    min-height: 560px;
+  }
+}
+
+/* ============================================
+   ANIMATION UTILITIES
+   ============================================ */
+
+.party-theme .party-animate-fade-in {
+  animation: party-fade-in var(--party-transition-base) ease-out;
+}
+
+@keyframes party-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.party-theme .party-animate-scale-in {
+  animation: party-scale-in var(--party-transition-fast) ease-out;
+}
+
+@keyframes party-scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================
+   SCROLL SNAP FOR CAROUSELS
+   ============================================ */
+
+.party-theme .party-carousel {
+  display: flex;
+  gap: var(--party-space-md);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: var(--party-space-md);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.party-theme .party-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.party-theme .party-carousel > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   BOTTOM SHEET (Mobile)
+   ============================================ */
+
+.party-theme .party-bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--party-background);
+  border-radius: var(--party-radius-xl) var(--party-radius-xl) 0 0;
+  box-shadow: var(--party-shadow-modal);
+  padding: var(--party-space-lg);
+  padding-bottom: calc(var(--party-space-lg) + env(safe-area-inset-bottom, 0px));
+  transform: translateY(100%);
+  transition: transform var(--party-transition-slow);
+  z-index: 50;
+}
+
+.party-theme .party-bottom-sheet.open {
+  transform: translateY(0);
+}
+
+.party-theme .party-bottom-sheet-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--party-border);
+  border-radius: var(--party-radius-full);
+  margin: 0 auto var(--party-space-md);
+}
+
+/* ============================================
+   SAVE/HEART BUTTON
+   ============================================ */
+
+.party-theme .party-save-btn {
+  position: absolute;
+  top: var(--party-space-md);
+  right: var(--party-space-md);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--party-radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all var(--party-transition-fast);
+  z-index: 10;
+}
+
+.party-theme .party-save-btn:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.party-theme .party-save-btn.saved {
+  color: var(--party-accent);
+}
+
+/* ============================================
+   PRICE DISPLAY
+   ============================================ */
+
+.party-theme .party-price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--party-space-xs);
+}
+
+.party-theme .party-price-current {
+  font-size: var(--party-font-size-lg);
+  font-weight: var(--party-font-weight-semibold);
+}
+
+.party-theme .party-price-original {
+  font-size: var(--party-font-size-sm);
+  color: var(--party-text-secondary);
+  text-decoration: line-through;
+}
+
+.party-theme .party-price-unit {
+  font-size: var(--party-font-size-sm);
+  color: var(--party-text-secondary);
+}
+
+/* ============================================
+   SAFE AREA UTILITIES (for notched devices)
+   ============================================ */
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-area-left {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+.safe-area-right {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Bottom nav height helper */
+.has-bottom-nav {
+  padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   FLOATING SHADOW (for FAB and floating elements)
+   ============================================ */
+
+.shadow-floating {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* ============================================
+   TOUCH TARGET UTILITIES (44px minimum)
+   ============================================ */
+
+/* Minimum touch target size for accessibility */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.touch-target-lg {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+/* Touch manipulation for smoother interactions */
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+/* Prevent text selection on touch interactions */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ============================================
+   OVERSCROLL BEHAVIOR
+   ============================================ */
+
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+
+.overscroll-none {
+  overscroll-behavior: none;
+}
+
+/* ============================================
+   PULL TO REFRESH DISABLE
+   ============================================ */
+
+.no-pull-refresh {
+  overscroll-behavior-y: contain;
+}
+
+/* ============================================
+   MOMENTUM SCROLL (iOS)
+   ============================================ */
+
+.momentum-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================
+   FOCUS VISIBLE FOR ACCESSIBILITY
+   ============================================ */
+
+.party-theme button:focus-visible,
+.party-theme a:focus-visible,
+.party-theme input:focus-visible {
+  outline: 2px solid var(--party-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   TAP HIGHLIGHT (iOS)
+   ============================================ */
+
+.no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================
+   RESPONSIVE TEXT SIZES
+   ============================================ */
+
+/* Prevent iOS from zooming on input focus */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="search"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}

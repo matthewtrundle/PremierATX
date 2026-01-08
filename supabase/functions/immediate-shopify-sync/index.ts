@@ -1,0 +1,281 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.52.0'
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
+// Rate limiting helper
+async function rateLimitedDelay(ms = 1000) {
+  await new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Retry wrapper for API calls with better rate limiting
+async function withRetry<T>(
+  operation: () => Promise<T>,
+  maxRetries = 5,
+  baseDelay = 3000
+): Promise<T> {
+  let lastError: any;
+  
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      // Add rate limiting delay before each attempt
+      if (attempt > 0) {
+        const delay = baseDelay * Math.pow(2, attempt - 1);
+        console.log(`⏳ Rate limiting delay: ${delay}ms (attempt ${attempt + 1}/${maxRetries + 1})`);
+        await rateLimitedDelay(delay);
+      }
+      
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      
+      if (attempt === maxRetries) break;
+      
+      // Check if error is retryable (5xx, network errors, rate limits)
+      const isRetryable = error?.status >= 500 || 
+                         error?.status === 429 || 
+                         error?.name === 'TypeError' ||
+                         error?.message?.includes('fetch') ||
+                         error?.message?.includes('Exceeded') ||
+                         error?.message?.includes('Too Many Requests');
+      
+      if (!isRetryable) {
+        console.error(`Non-retryable error:`, error);
+        break;
+      }
+      
+      console.warn(`Retryable error on attempt ${attempt + 1}:`, error?.message || error);
+    }
+  }
+  
+  throw lastError;
+}
+
+Deno.serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    console.log('🚀 Starting immediate Shopify sync...');
+
+    // Step 1: Fetch latest products from Shopify with retry
+    console.log('📦 Fetching products from Shopify...');
+    const { data: shopifyData, error: shopifyError } = await withRetry(
+      () => supabase.functions.invoke('fetch-shopify-products', {
+        body: { forceRefresh: true }
+      })
+    );
+
+    if (shopifyError) {
+      console.error('❌ Shopify fetch error:', shopifyError);
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: `Shopify fetch failed: ${shopifyError.message}`,
+          details: shopifyError.stack 
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 500 
+        }
+      );
+    }
+
+    console.log('✅ Shopify products fetched successfully');
+
+    // Step 2: Clear existing cache entries
+    console.log('🗑️ Clearing cache...');
+    try {
+      const { error: cacheError } = await supabase
+        .from('cache')
+        .delete()
+        .like('key', '%products%');
+
+      if (cacheError) {
+        console.warn('⚠️ Cache clear warning:', cacheError.message);
+      } else {
+        console.log('✅ Cache cleared successfully');
+      }
+    } catch (cacheError) {
+      console.warn('⚠️ Cache clear error (non-critical):', cacheError);
+    }
+
+    // Step 3: Process any pending product modifications
+    console.log('🔄 Processing pending modifications...');
+    const { data: pendingMods, error: modsError } = await supabase
+      .from('product_modifications')
+      .select('*')
+      .eq('synced_to_shopify', false);
+
+    if (modsError) {
+      console.warn('⚠️ Error fetching modifications:', modsError);
+    } else if (pendingMods && pendingMods.length > 0) {
+      console.log(`🔄 Found ${pendingMods.length} pending modifications to sync`);
+      
+      // Group by collection for batch sync
+      const collectionGroups = new Map();
+      pendingMods.forEach(mod => {
+        if (mod.collection) {
+          const collectionKey = mod.collection;
+          if (!collectionGroups.has(collectionKey)) {
+            collectionGroups.set(collectionKey, {
+              title: collectionKey,
+              productIds: []
+            });
+          }
+          collectionGroups.get(collectionKey).productIds.push(mod.shopify_product_id);
+        }
+      });
+
+      console.log(`📦 Processing ${collectionGroups.size} collections...`);
+
+      // Sync each collection sequentially with rate limiting
+      let collectionIndex = 0;
+      for (const [collectionKey, collectionData] of collectionGroups.entries()) {
+        const { title, productIds } = collectionData;
+        try {
+          // Add delay between collections to prevent rate limiting
+          if (collectionIndex > 0) {
+            console.log(`⏳ Rate limiting delay before next collection...`);
+            await rateLimitedDelay(2000); // 2 second delay between collections
+          }
+          
+          const handle = title.toLowerCase().replace(/\s+/g, '-');
+          console.log(`🔄 Syncing collection "${title}" with ${productIds.length} products...`);
+          
+          const { data: syncResult, error: syncError } = await withRetry(
+            () => supabase.functions.invoke('sync-custom-collection-to-shopify', {
+              body: {
+                collection_id: `custom-${handle}`,
+                title: title,
+                handle: handle,
+                description: `Custom collection: ${title}`,
+                product_ids: productIds
+              }
+            })
+          );
+
+          if (syncError) {
+            console.error(`❌ Error syncing collection "${title}":`, syncError);
+            throw syncError;
+          } else {
+            console.log(`✅ Successfully synced collection "${title}" to Shopify:`, syncResult);
+            
+            // Mark products as synced to Shopify
+            const { error: updateError } = await supabase
+              .from('product_modifications')
+              .update({ 
+                synced_to_shopify: true,
+                updated_at: new Date().toISOString()
+              })
+              .in('shopify_product_id', productIds);
+
+            if (updateError) {
+              console.error(`❌ Error marking products as synced:`, updateError);
+            } else {
+              console.log(`✅ Marked ${productIds.length} products as synced to Shopify`);
+            }
+          }
+          
+          collectionIndex++;
+        } catch (error) {
+          console.error(`❌ Error processing collection "${title}":`, error);
+          // Continue with other collections instead of failing the entire sync
+          console.log(`⚠️ Skipping collection "${title}" and continuing...`);
+        }
+      }
+    } else {
+      console.log('ℹ️ No pending modifications to sync');
+    }
+
+    // Step 4: Sync to app with incremental updates (faster)
+    console.log('📱 Syncing to app with incremental updates...');
+    const { data: appSyncData, error: appSyncError } = await withRetry(
+      () => supabase.functions.invoke('sync-products-to-app', {
+        body: { incrementalSync: true }
+      })
+    );
+
+    if (appSyncError) {
+      console.warn('⚠️ App sync warning:', appSyncError.message);
+    } else {
+      console.log('✅ App sync completed successfully:', appSyncData);
+    }
+
+    // Step 5: Refresh collections cache to ensure app has latest data
+    console.log('🔄 Refreshing collections cache...');
+    const { data: collectionsRefresh, error: collectionsError } = await withRetry(
+      () => supabase.functions.invoke('get-all-collections', {
+        body: { forceRefresh: true }
+      })
+    );
+
+    if (collectionsError) {
+      console.warn('⚠️ Collections refresh warning:', collectionsError.message);
+    } else {
+      console.log('✅ Collections cache refreshed successfully');
+    }
+
+    // Step 6: Update cache with fresh data
+    console.log('💾 Updating cache with fresh data...');
+    try {
+      const cacheKey = 'shopify_products_latest';
+      const { error: cacheUpsertError } = await supabase.rpc('safe_cache_upsert', {
+        cache_key: cacheKey,
+        cache_data: shopifyData,
+        expires_timestamp: Date.now() + (5 * 60 * 1000) // 5 minutes
+      });
+
+      if (cacheUpsertError) {
+        console.warn('⚠️ Cache upsert warning:', cacheUpsertError.message);
+      } else {
+        console.log('✅ Cache updated successfully');
+      }
+    } catch (cacheError) {
+      console.warn('⚠️ Cache update error (non-critical):', cacheError);
+    }
+
+    console.log('🎉 Immediate Shopify sync completed successfully');
+
+    // Return success with sync details
+    return new Response(
+      JSON.stringify({ 
+        success: true,
+        message: 'Immediate Shopify sync completed successfully',
+        details: {
+          shopifyProductsCount: shopifyData?.products?.length || 0,
+          pendingModsProcessed: pendingMods?.length || 0,
+          cacheUpdated: true,
+          appSyncCompleted: !appSyncError,
+          timestamp: new Date().toISOString()
+        }
+      }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
+    );
+
+  } catch (error) {
+    console.error('💥 Immediate sync error:', error);
+    return new Response(
+      JSON.stringify({ 
+        success: false, 
+        error: error.message || 'Unexpected error during immediate sync',
+        details: error.stack
+      }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 500 
+      }
+    );
+  }
+});

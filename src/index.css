@@ -1,0 +1,493 @@
+@import './styles/product-pricing.css';
+
+@import url('./styles/animations.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Scrollbar utilities */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Mobile safe area utilities for better mobile UX */
+@supports (padding: max(0px)) {
+  .safe-area-top {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+  .safe-area-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+  .safe-area-inset {
+    padding-top: max(env(safe-area-inset-top), 0px);
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  }
+}
+
+/* Mobile optimized scrolling and keyboard hiding */
+@media (max-width: 768px) {
+  html {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  
+  body {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  #root {
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  /* Hide keyboard on scroll for mobile inputs */
+  input:focus, textarea:focus, [contenteditable]:focus {
+    /* Prepare for blur on scroll */
+  }
+}
+
+@import './styles/cover-animations.css';
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Primary - vibrant green for checkout/success actions */
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 142 76% 46%;
+
+    /* Light blue from logo for titles and navigation */
+    --brand-blue: 217 91% 60%;
+    --brand-blue-foreground: 0 0% 100%;
+
+    /* Checkout brand purple (matches cart slide-out) */
+    --checkout: 270 90% 60%;
+    --checkout-foreground: 0 0% 100%;
+
+    /* Trust blue secondary */
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 45 93% 58%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    /* Age verification colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --danger: 0 84% 60%;
+    --danger-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 142 76% 36%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(217 91% 70%));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(142 76% 46%));
+    --gradient-danger: linear-gradient(135deg, hsl(var(--danger)), hsl(0 84% 70%));
+
+    /* Shadows */
+    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.3);
+    --shadow-card: 0 10px 30px -10px hsl(222.2 84% 4.9% / 0.1);
+    --shadow-floating: 0 20px 40px -15px hsl(222.2 84% 4.9% / 0.15);
+
+    /* Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Checkout brand purple (dark) */
+    --checkout: 270 90% 60%;
+    --checkout-foreground: 0 0% 100%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+    /* Performance optimizations */
+    will-change: scroll-position;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    /* Mobile optimizations */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+    /* NOTE: don't apply transforms to <body>; it breaks fixed-position (Radix Dialog) */
+  }
+  
+  /* Better mobile button targets */
+  @media (max-width: 768px) {
+    button {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    input, textarea, select {
+      font-size: 16px !important; /* Prevents zoom on iOS */
+      min-height: 44px;
+    }
+    
+    /* Improve touch scrolling */
+    * {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  /* Performance optimizations */
+  img {
+    content-visibility: auto;
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Mobile viewport fix */
+  html {
+    height: 100%;
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  /* Checkout mode optimizations */
+  body.checkout-mode {
+    /* Reduce animations and distractions during checkout */
+    animation-duration: 0.1s !important;
+    transition-duration: 0.1s !important;
+  }
+  
+  body.checkout-mode * {
+    /* Ensure checkout elements are properly interactive */
+    pointer-events: auto;
+  }
+}
+
+@layer utilities {
+  @keyframes shine {
+    0% { transform: translateX(-150%); }
+    100% { transform: translateX(250%); }
+  }
+  .animate-shine {
+    animation: shine 1.25s ease-out 0.15s both;
+  }
+  /* Sparkle glitter for logo intro */
+  @keyframes sparkle-twinkle {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(0.6) rotate(0deg);
+      filter: drop-shadow(0 0 0 hsl(0 0% 100% / 0));
+    }
+    40% {
+      opacity: 1;
+      transform: scale(1) rotate(45deg);
+      filter: drop-shadow(0 0 8px hsl(0 0% 100% / 0.6));
+  }
+}
+
+/* Condensed product grid styles for search mode with performance */
+.condensed-grid {
+  gap: 1rem !important;
+  /* Hardware acceleration */
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .condensed-grid {
+    gap: 0.75rem !important;
+  }
+  
+  .condensed-grid > div {
+    transform: scale(0.9) translateZ(0);
+    transform-origin: center;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
+/* Performance optimizations for animations */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    transition-property: transform, opacity, background-color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+  .sparkle {
+    position: absolute;
+    background: radial-gradient(circle, hsl(0 0% 100%) 0%, hsl(0 0% 100% / 0.85) 40%, hsl(0 0% 100% / 0) 65%);
+    border-radius: 9999px;
+    opacity: 0;
+    animation: sparkle-twinkle 2.7s ease-out both;
+    will-change: transform, opacity, filter;
+  }
+  .sparkle-sm { width: 6px; height: 6px; }
+  .sparkle-md { width: 8px; height: 8px; }
+  .sparkle-lg { width: 10px; height: 10px; }
+  }
+
+  /* Checkout blink animation */
+  .checkout-blink {
+    animation: checkout-pulse 1.5s infinite;
+  }
+
+  @keyframes checkout-pulse {
+    0%, 100% { 
+      opacity: 1; 
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 0.8; 
+      transform: scale(1.05);
+    }
+  }
+
+/* Green circle size optimization for mobile */
+@media (max-width: 768px) {
+  .product-grid .text-green-500,
+  .text-green-500 svg {
+    transform: scale(0.7);
+  }
+}
+
+/* Checkout button blink animation */
+.checkout-blink {
+  animation: checkout-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes checkout-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
+  }
+}
+
+/* Mobile green circle size reduction and quantity button alignment fixes */
+@media (max-width: 768px) {
+  .grid-cols-3 .bg-primary:not(.badge):not(.button) {
+    transform: scale(0.7);
+  }
+  
+  /* Fix quantity controls alignment on mobile */
+  .quantity-controls-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  
+  /* Ensure buttons are properly sized and centered */
+  .quantity-controls-mobile button {
+    min-height: 32px;
+    min-width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Custom scrollbar for better UI */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--border));
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground));
+}
+
+/* Animation utilities for cover page optimization */
+@layer utilities {
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out;
+  }
+  
+  .hover-scale {
+    transition: transform 0.2s ease-out;
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* Responsive Marquee Animation for Scrolling Text */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 10s linear infinite;
+}
+
+/* Responsive font sizing utilities */
+@layer utilities {
+  .text-responsive-xs {
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
+  }
+  .text-responsive-sm {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+  .text-responsive-base {
+    font-size: clamp(1rem, 3vw, 1.125rem);
+  }
+  .text-responsive-lg {
+    font-size: clamp(1.125rem, 3.5vw, 1.25rem);
+  }
+  .text-responsive-xl {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+  }
+  .text-responsive-2xl {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+  .text-responsive-3xl {
+    font-size: clamp(1.875rem, 6vw, 2.5rem);
+  }
+  .text-responsive-4xl {
+    font-size: clamp(2.25rem, 7vw, 3rem);
+  }
+  .text-responsive-5xl {
+    font-size: clamp(3rem, 8vw, 4rem);
+  }
+  .text-responsive-6xl {
+    font-size: clamp(3.75rem, 10vw, 5rem);
+  }
+}
