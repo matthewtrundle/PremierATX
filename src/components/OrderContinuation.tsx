@@ -44,9 +44,9 @@ export const OrderContinuation: React.FC<OrderContinuationProps> = ({
       <Card className="max-w-sm w-full shadow-floating animate-fade-in">
         <CardHeader className="text-center py-4">
           {/* Condensed logo and heading */}
-          <img 
-            src={logoImage} 
-            alt="Party On Delivery Logo" 
+          <img
+            src={logoImage.src}
+            alt="Party On Delivery Logo"
             className="w-24 h-24 mx-auto mb-2"
           />
           <div className="space-y-1">
