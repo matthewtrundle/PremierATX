@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
 // Dynamically import the admin dashboard to avoid SSR issues
@@ -23,10 +22,13 @@ export default function AdminPage() {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const supabase = createClient();
 
   useEffect(() => {
     async function checkAdmin() {
+      // Import Supabase client only on client-side to avoid build-time errors
+      const { createClient } = await import('@/lib/supabase/client');
+      const supabase = createClient();
+
       try {
         const { data: { session } } = await supabase.auth.getSession();
 
@@ -53,7 +55,7 @@ export default function AdminPage() {
     }
 
     checkAdmin();
-  }, [supabase]);
+  }, []);
 
   if (loading) {
     return (
