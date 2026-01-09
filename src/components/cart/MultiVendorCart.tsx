@@ -115,10 +115,12 @@ export function CartSummaryBar({ onClick, className }: CartSummaryBarProps) {
 }
 
 // Cart Item Card
+type CartItemType = ReturnType<typeof usePartyCart>['items'][0];
+
 interface CartItemCardProps {
-  item: ReturnType<typeof usePartyCart>['items'][0];
+  item: CartItemType;
   onRemove: () => void;
-  onUpdate: (updates: Partial<typeof item>) => void;
+  onUpdate: (updates: Partial<CartItemType>) => void;
 }
 
 function CartItemCard({ item, onRemove, onUpdate }: CartItemCardProps) {
