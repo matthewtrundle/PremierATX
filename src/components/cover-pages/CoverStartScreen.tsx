@@ -75,7 +75,7 @@ export const CoverStartScreen: React.FC<CoverStartScreenProps> = ({
   
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [showVideo, setShowVideo] = React.useState(false);
-  const fallbackSrc = backgroundVideoUrl ? backgroundImage : (backgroundImageUrl || backgroundImage);
+  const fallbackSrc = backgroundVideoUrl ? backgroundImage.src : (backgroundImageUrl || backgroundImage.src);
 
   // Track viewport height for responsive spacing
   const [viewportHeight, setViewportHeight] = React.useState(window.innerHeight);

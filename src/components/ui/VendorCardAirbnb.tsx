@@ -60,16 +60,14 @@ export function VendorCardAirbnb({
     onFavoriteClick?.(id);
   };
 
-  const CardWrapper = href ? Link : 'div';
-  const cardProps = href ? { href } : {};
+  const cardClassName = "group block";
+  const cardEvents = {
+    onMouseEnter: () => setIsHovered(true),
+    onMouseLeave: () => setIsHovered(false),
+  };
 
-  return (
-    <CardWrapper
-      {...cardProps}
-      className="group block"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+  const cardContent = (
+    <>
       {/* Image Container */}
       <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100">
         {/* Images */}
@@ -172,7 +170,21 @@ export function VendorCardAirbnb({
           <span className="text-[15px] text-gray-500"> per {priceUnit}</span>
         </p>
       </div>
-    </CardWrapper>
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={cardClassName} {...cardEvents}>
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={cardClassName} {...cardEvents}>
+      {cardContent}
+    </div>
   );
 }
 

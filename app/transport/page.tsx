@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 
 const TransportPage = dynamic(
-  () => import('@/pages/TransportPage'),
+  () => import('@/views/TransportPage'),
   {
     ssr: false,
     loading: () => (

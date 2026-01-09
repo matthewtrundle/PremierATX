@@ -57,8 +57,8 @@ const CustomPartyOnDeliveryStartScreen = () => {
           <div className="p-8 text-center space-y-6">
             {/* Logo */}
             <div className="flex justify-center mb-6">
-              <img 
-                src={customLogo} 
+              <img
+                src={customLogo.src}
                 alt="Party On Delivery & Concierge"
                 className="h-14 w-14 rounded-full object-cover"
               />

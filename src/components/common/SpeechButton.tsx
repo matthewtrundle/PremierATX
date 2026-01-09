@@ -32,8 +32,8 @@ export const SpeechButton: React.FC<SpeechButtonProps> = ({ className }) => {
       size="lg"
     >
       <div className="flex flex-col items-center justify-center h-full">
-        <img 
-          src={discoBall} 
+        <img
+          src={discoBall.src}
           alt="Disco Ball" 
           className={`w-8 h-8 mb-1 ${isPressed ? 'animate-spin' : 'animate-spin'}`}
           style={{ 

@@ -13,6 +13,9 @@ import {
 import { toast } from 'sonner';
 import { partyKeys } from './useParties';
 
+// Type bypass for tables not yet in Supabase types
+const db = supabase as any;
+
 // Query keys
 export const guestKeys = {
   all: ['party-guests'] as const,
@@ -31,7 +34,7 @@ export function usePartyGuests(partyId: string | undefined) {
     queryFn: async () => {
       if (!partyId) return [];
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_guests')
         .select('*')
         .eq('party_id', partyId)
@@ -56,7 +59,7 @@ export function usePartyGuest(id: string | undefined) {
     queryFn: async () => {
       if (!id) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_guests')
         .select('*')
         .eq('id', id)
@@ -80,7 +83,7 @@ export function useGuestByEmail(partyId: string | undefined, email: string | und
     queryFn: async () => {
       if (!partyId || !email) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_guests')
         .select('*')
         .eq('party_id', partyId)
@@ -104,7 +107,7 @@ export function useCreatePartyGuest() {
 
   return useMutation({
     mutationFn: async (guest: PartyGuestInsert) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_guests')
         .insert(guest)
         .select()
@@ -134,7 +137,7 @@ export function useBulkCreateGuests() {
 
   return useMutation({
     mutationFn: async (guests: PartyGuestInsert[]) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_guests')
         .insert(guests)
         .select();
@@ -163,7 +166,7 @@ export function useUpdatePartyGuest() {
 
   return useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: PartyGuestUpdate }) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_guests')
         .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', id)
@@ -194,7 +197,7 @@ export function useUpdateGuestRSVP() {
 
   return useMutation({
     mutationFn: async ({ id, rsvpStatus }: { id: string; rsvpStatus: RSVPStatus }) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_guests')
         .update({
           rsvp_status: rsvpStatus,
@@ -263,7 +266,7 @@ export function useUpdateGuestPayment() {
         updates.paid_at = new Date().toISOString();
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_guests')
         .update(updates)
         .eq('id', id)
@@ -299,7 +302,7 @@ export function useDeletePartyGuest() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await db
         .from('party_guests')
         .delete()
         .eq('id', id);
@@ -327,7 +330,7 @@ export function useGuestStats(partyId: string | undefined) {
     queryFn: async () => {
       if (!partyId) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_guests')
         .select('rsvp_status, payment_status, amount_owed, amount_paid')
         .eq('party_id', partyId);

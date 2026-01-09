@@ -11,14 +11,18 @@ const APP_TIMEZONE = 'America/Chicago';
 
 // Save timezone preference permanently
 export const initializeTimezone = () => {
+  // Skip on server-side
+  if (typeof window === 'undefined') {
+    return;
+  }
   localStorage.setItem('app_timezone', APP_TIMEZONE);
   localStorage.setItem('timezone_preference_saved', 'true');
 };
 
 // Get the app timezone (always CST)
 export const getAppTimezone = (): string => {
-  // Always return CST, but initialize localStorage if not set
-  if (!localStorage.getItem('app_timezone')) {
+  // Always return CST, but initialize localStorage if not set (client-side only)
+  if (typeof window !== 'undefined' && !localStorage.getItem('app_timezone')) {
     initializeTimezone();
   }
   return APP_TIMEZONE;
@@ -88,5 +92,7 @@ export const isTodayInAppTimezone = (date: Date | string): boolean => {
   );
 };
 
-// Initialize timezone on module load
-initializeTimezone();
+// Initialize timezone on module load (client-side only)
+if (typeof window !== 'undefined') {
+  initializeTimezone();
+}

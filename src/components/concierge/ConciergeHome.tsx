@@ -15,42 +15,42 @@ const services = [
     title: 'View Itinerary',
     description: 'See your planned activities and reservations',
     href: '/itinerary',
-    image: itineraryHero
+    image: itineraryHero.src
   },
   {
     icon: Wine,
     title: 'Alcohol Delivery',
     description: 'Premium spirits delivered to your location',
     href: '/app/delivery',
-    image: alcoholHero
+    image: alcoholHero.src
   },
   {
     icon: Car,
     title: 'Transportation',
     description: 'Luxury vehicles for group transportation',
     href: '/transport',
-    image: transportHero
+    image: transportHero.src
   },
   {
     icon: Ship,
     title: 'Boat Rentals',
     description: 'Austin lake adventures await',
     href: '/boats',
-    image: boatsHero
+    image: boatsHero.src
   },
   {
     icon: MapPin,
     title: 'Explore Austin',
     description: 'Discover Austin\'s best activities',
     href: '/explore',
-    image: exploreHero
+    image: exploreHero.src
   },
   {
     icon: Home,
     title: 'Vacation Rentals',
     description: 'Book luxury stays for your group',
     href: '/rentals',
-    image: rentalsHero
+    image: rentalsHero.src
   }
 ];
 
@@ -60,7 +60,7 @@ export function ConciergeHome() {
       {/* Hero Section */}
       <div className="relative h-[50vh] min-h-[400px] max-h-[600px] overflow-hidden">
         <img
-          src={heroImage}
+          src={heroImage.src}
           alt="Austin party celebration"
           className="w-full h-full object-cover"
         />

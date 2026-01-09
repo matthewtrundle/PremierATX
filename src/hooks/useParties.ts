@@ -34,7 +34,9 @@ export function useParties(options?: {
   return useQuery({
     queryKey: partyKeys.list(options || {}),
     queryFn: async () => {
-      let query = supabase
+      // Use 'any' to bypass missing table types (parties table added but types not regenerated)
+      const client = supabase as any;
+      let query = client
         .from('parties')
         .select(`
           *,
@@ -73,7 +75,8 @@ export function useParty(id: string | undefined) {
     queryFn: async () => {
       if (!id) return null;
 
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .select(`
           *,
@@ -100,7 +103,8 @@ export function usePartyWithDetails(id: string | undefined) {
     queryFn: async () => {
       if (!id) return null;
 
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .select(`
           *,
@@ -133,7 +137,8 @@ export function usePartiesByPartner(partnerId: string | undefined) {
     queryFn: async () => {
       if (!partnerId) return [];
 
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .select(`
           *,
@@ -161,7 +166,8 @@ export function usePartiesByOrganizer(email: string | undefined) {
     queryFn: async () => {
       if (!email) return [];
 
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .select(`
           *,
@@ -189,7 +195,8 @@ export function useCreateParty() {
 
   return useMutation({
     mutationFn: async (party: PartyInsert) => {
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .insert(party)
         .select()
@@ -218,7 +225,8 @@ export function useUpdateParty() {
 
   return useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: PartyUpdate }) => {
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', id)
@@ -248,7 +256,8 @@ export function useUpdatePartyStatus() {
 
   return useMutation({
     mutationFn: async ({ id, status }: { id: string; status: PartyStatus }) => {
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .update({ status, updated_at: new Date().toISOString() })
         .eq('id', id)
@@ -278,7 +287,8 @@ export function useDeleteParty() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const client = supabase as any;
+      const { error } = await client
         .from('parties')
         .update({ status: 'cancelled', updated_at: new Date().toISOString() })
         .eq('id', id);
@@ -305,7 +315,8 @@ export function usePartyStats(partnerId: string | undefined) {
     queryFn: async () => {
       if (!partnerId) return null;
 
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .select('status, total_amount')
         .eq('vr_partner_id', partnerId);
@@ -362,7 +373,8 @@ export function usePartyByShareToken(token: string | undefined) {
     queryFn: async (): Promise<PartyWithPartnerBranding | null> => {
       if (!token) return null;
 
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .select(`
           *,
@@ -412,7 +424,8 @@ export function usePartyWithDetailsByShareToken(token: string | undefined) {
     queryFn: async () => {
       if (!token) return null;
 
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('parties')
         .select(`
           *,

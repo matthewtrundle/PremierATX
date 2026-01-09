@@ -95,7 +95,7 @@ export const ProductCategories: React.FC<ProductCategoriesProps> = ({
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Preload background image for instant display
-  const { loaded: bgImageLoaded } = useImagePreloader(bgImage, { priority: true });
+  const { loaded: bgImageLoaded } = useImagePreloader(bgImage.src, { priority: true });
   
   // Preload logo if provided
   const { loaded: logoLoaded } = useImagePreloader(logoUrl);
@@ -379,7 +379,7 @@ export const ProductCategories: React.FC<ProductCategoriesProps> = ({
           bgImageLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ 
-          backgroundImage: heroConfig.backgroundUrl ? `url(${heroConfig.backgroundUrl})` : `url(${bgImage})`,
+          backgroundImage: heroConfig.backgroundUrl ? `url(${heroConfig.backgroundUrl})` : `url(${bgImage.src})`,
           minHeight: 'clamp(500px, 70vh, 800px)' // Responsive height
         }}
       >

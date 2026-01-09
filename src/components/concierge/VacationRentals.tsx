@@ -32,7 +32,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 20,
       pricePerNight: 1250,
       amenities: ['Pool', 'Pool Table', 'Outdoor Grill', 'Hot Tub'],
-      imageUrl: mansion1,
+      imageUrl: mansion1.src,
       description: 'Modern architectural masterpiece with infinity pool overlooking Austin hills. Perfect for luxury events and gatherings.',
       bedrooms: 8,
       bathrooms: 10
@@ -43,7 +43,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 18,
       pricePerNight: 1100,
       amenities: ['Pool', 'Outdoor Grill', 'Fire Pit', 'Tennis Court'],
-      imageUrl: mansion2,
+      imageUrl: mansion2.src,
       description: 'Stunning Mediterranean-style villa with resort amenities and outdoor entertainment complex.',
       bedrooms: 7,
       bathrooms: 8
@@ -54,7 +54,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 22,
       pricePerNight: 1500,
       amenities: ['Pool', 'Pool Table', 'Stripper Pole', 'Home Theater'],
-      imageUrl: mansion3,
+      imageUrl: mansion3.src,
       description: 'Contemporary glass mansion with state-of-the-art entertainment areas and breathtaking city views.',
       bedrooms: 9,
       bathrooms: 11
@@ -65,7 +65,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 16,
       pricePerNight: 980,
       amenities: ['Pool', 'Outdoor Grill', 'Tiki Bar', 'Game Room'],
-      imageUrl: mansion4,
+      imageUrl: mansion4.src,
       description: 'Sprawling estate with custom pool complex, waterfall features, and multiple entertainment zones.',
       bedrooms: 6,
       bathrooms: 7
@@ -76,7 +76,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 15,
       pricePerNight: 850,
       amenities: ['Pool', 'Pool Table', 'Outdoor Grill', 'Wine Cellar'],
-      imageUrl: mansion5,
+      imageUrl: mansion5.src,
       description: 'Elegant Tuscan-style property with multi-level outdoor living spaces and gourmet kitchen.',
       bedrooms: 6,
       bathrooms: 7
@@ -87,7 +87,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 24,
       pricePerNight: 1350,
       amenities: ['Pool', 'Outdoor Grill', 'Fire Pit', 'Stripper Pole'],
-      imageUrl: mansion6,
+      imageUrl: mansion6.src,
       description: 'Massive ranch estate with swim-up bar, outdoor lounge areas, and panoramic hill country views.',
       bedrooms: 10,
       bathrooms: 12
@@ -98,7 +98,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 14,
       pricePerNight: 1200,
       amenities: ['Pool', 'Pool Table', 'Rooftop Deck', 'Smart Home'],
-      imageUrl: mansion7,
+      imageUrl: mansion7.src,
       description: 'Award-winning modern architecture with infinity pool and floor-to-ceiling glass walls.',
       bedrooms: 5,
       bathrooms: 6
@@ -109,7 +109,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 12,
       pricePerNight: 780,
       amenities: ['Pool', 'Outdoor Grill', 'Courtyard', 'Pool Table'],
-      imageUrl: mansion8,
+      imageUrl: mansion8.src,
       description: 'Secluded Tuscan villa with private courtyard pool and professional outdoor kitchen.',
       bedrooms: 5,
       bathrooms: 6
@@ -120,7 +120,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 30,
       pricePerNight: 2200,
       amenities: ['Pool', 'Swim Up Bar', 'Stripper Pole', 'Outdoor Grill'],
-      imageUrl: mansion9,
+      imageUrl: mansion9.src,
       description: 'Ultimate party mansion with multiple pools, swim-up bar, cabanas, and resort-level amenities.',
       bedrooms: 12,
       bathrooms: 15
@@ -131,7 +131,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 28,
       pricePerNight: 1950,
       amenities: ['Pool', 'Water Slides', 'Outdoor Grill', 'Pool Table'],
-      imageUrl: mansion10,
+      imageUrl: mansion10.src,
       description: 'Spectacular estate with lagoon-style pool, water slides, grotto, and tiki bar.',
       bedrooms: 11,
       bathrooms: 13
@@ -142,7 +142,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 18,
       pricePerNight: 1450,
       amenities: ['Pool', 'Pool Table', 'Rooftop Deck', 'Outdoor Grill'],
-      imageUrl: mansion11,
+      imageUrl: mansion11.src,
       description: 'Modern palace with rooftop entertaining, custom LED pool lighting, and skyline views.',
       bedrooms: 7,
       bathrooms: 9
@@ -153,7 +153,7 @@ const VacationRentals: React.FC<VacationRentalsProps> = ({ onBack }) => {
       capacity: 25,
       pricePerNight: 1800,
       amenities: ['Pool', 'Outdoor Theater', 'Stripper Pole', 'Outdoor Grill'],
-      imageUrl: mansion12,
+      imageUrl: mansion12.src,
       description: 'Mega mansion with private resort amenities including beach-entry pool and outdoor cinema.',
       bedrooms: 10,
       bathrooms: 12

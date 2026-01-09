@@ -10,6 +10,9 @@ import {
 } from '@/types/partyPlanning';
 import { toast } from 'sonner';
 
+// Type bypass for tables not yet in Supabase types
+const db = supabase as any;
+
 // Query keys
 export const vrPartnerKeys = {
   all: ['vr-partners'] as const,
@@ -28,7 +31,7 @@ export function useVRPartners(options?: {
   return useQuery({
     queryKey: vrPartnerKeys.list(options || {}),
     queryFn: async () => {
-      let query = supabase
+      let query = db
         .from('vr_partners')
         .select('*')
         .order('name');
@@ -60,7 +63,7 @@ export function useVRPartner(id: string | undefined) {
     queryFn: async () => {
       if (!id) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('vr_partners')
         .select('*')
         .eq('id', id)
@@ -84,7 +87,7 @@ export function useVRPartnerBySlug(slug: string | undefined) {
     queryFn: async () => {
       if (!slug) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('vr_partners')
         .select('*')
         .eq('slug', slug)
@@ -112,7 +115,7 @@ export function useCreateVRPartner() {
 
   return useMutation({
     mutationFn: async (partner: VRPartnerInsert) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('vr_partners')
         .insert(partner)
         .select()
@@ -141,7 +144,7 @@ export function useUpdateVRPartner() {
 
   return useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: VRPartnerUpdate }) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('vr_partners')
         .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', id)
@@ -171,7 +174,7 @@ export function useDeleteVRPartner() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await db
         .from('vr_partners')
         .update({ is_active: false, updated_at: new Date().toISOString() })
         .eq('id', id);
@@ -195,7 +198,7 @@ export function useDeleteVRPartner() {
 export function useCheckSlugAvailability() {
   return useMutation({
     mutationFn: async (slug: string) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('vr_partners')
         .select('id')
         .eq('slug', slug)

@@ -58,6 +58,11 @@ export const getActiveDeliveryInfo = (): {
   data: Partial<DeliveryInfo> | null;
   addressInfo?: AddressInfo;
 } => {
+  // Skip on server-side
+  if (typeof window === 'undefined') {
+    return { source: 'none', data: null };
+  }
+
   // Priority 1: Group order data (when joining a group)
   const groupOrderData = localStorage.getItem(STORAGE_KEYS.GROUP_ORDER_DATA);
   if (groupOrderData) {
@@ -109,6 +114,11 @@ export const getActiveDeliveryInfo = (): {
 
 // Store group order info with proper structure
 export const storeGroupOrderInfo = (orderData: any, shareToken: string) => {
+  // Skip on server-side
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
   const groupOrderInfo: GroupOrderInfo = {
     shareToken,
     deliveryDate: orderData.delivery_date,
@@ -149,6 +159,10 @@ export const storeGroupOrderInfo = (orderData: any, shareToken: string) => {
 
 // Clear all group order data
 export const clearGroupOrderData = () => {
+  // Skip on server-side
+  if (typeof window === 'undefined') {
+    return;
+  }
   localStorage.removeItem(STORAGE_KEYS.GROUP_ORDER_DATA);
   localStorage.removeItem(STORAGE_KEYS.ORIGINAL_GROUP_DATA);
   localStorage.removeItem(STORAGE_KEYS.GROUP_ORDER_TOKEN);
@@ -158,6 +172,10 @@ export const clearGroupOrderData = () => {
 
 // Check if currently joining a group order
 export const isJoiningGroupOrder = (): boolean => {
+  // Skip on server-side
+  if (typeof window === 'undefined') {
+    return false;
+  }
   const joinDecision = localStorage.getItem(STORAGE_KEYS.GROUP_JOIN_DECISION);
   const addToOrder = localStorage.getItem(STORAGE_KEYS.ADD_TO_ORDER);
   return joinDecision === 'yes' || addToOrder === 'true';

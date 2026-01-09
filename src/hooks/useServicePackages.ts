@@ -11,6 +11,9 @@ import {
 import { toast } from 'sonner';
 import { vendorKeys } from './useServiceVendors';
 
+// Type bypass for tables not yet in Supabase types
+const db = supabase as any;
+
 // Query keys
 export const packageKeys = {
   all: ['service-packages'] as const,
@@ -30,7 +33,7 @@ export function useServicePackages(vendorId: string | undefined, options?: {
     queryFn: async () => {
       if (!vendorId) return [];
 
-      let query = supabase
+      let query = db
         .from('service_packages')
         .select('*')
         .eq('vendor_id', vendorId)
@@ -61,7 +64,7 @@ export function useServicePackage(id: string | undefined) {
     queryFn: async () => {
       if (!id) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_packages')
         .select(`
           *,
@@ -88,7 +91,7 @@ export function usePackagesWithVendors(packageIds: string[]) {
     queryFn: async () => {
       if (!packageIds.length) return [];
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_packages')
         .select(`
           *,
@@ -113,7 +116,7 @@ export function useCreateServicePackage() {
 
   return useMutation({
     mutationFn: async (pkg: ServicePackageInsert) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_packages')
         .insert(pkg)
         .select()
@@ -143,7 +146,7 @@ export function useUpdateServicePackage() {
 
   return useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: ServicePackageUpdate }) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_packages')
         .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', id)
@@ -174,7 +177,7 @@ export function useDeleteServicePackage() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await db
         .from('service_packages')
         .update({ is_active: false, updated_at: new Date().toISOString() })
         .eq('id', id);
@@ -202,7 +205,7 @@ export function useReorderPackages() {
   return useMutation({
     mutationFn: async (packages: { id: string; display_order: number }[]) => {
       const updates = packages.map(pkg =>
-        supabase
+        db
           .from('service_packages')
           .update({ display_order: pkg.display_order })
           .eq('id', pkg.id)

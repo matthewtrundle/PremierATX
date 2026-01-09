@@ -24,6 +24,11 @@ class UniversalStorage {
   }
 
   private checkStorageAvailability() {
+    // Skip on server-side
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     // Test localStorage
     try {
       const testKey = '__test_storage__';

@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 
 const OrderComplete = dynamic(
-  () => import('@/pages/OrderComplete'),
+  () => import('@/views/OrderComplete'),
   {
     ssr: false,
     loading: () => (

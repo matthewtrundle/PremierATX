@@ -86,7 +86,8 @@ export function usePartnerSession() {
     queryFn: async () => {
       if (!user?.email) return null;
 
-      const { data, error } = await supabase
+      const client = supabase as any;
+      const { data, error } = await client
         .from('vr_partners')
         .select('*')
         .or(`auth_user_id.eq.${user.id},email.eq.${user.email}`)
@@ -123,8 +124,9 @@ export function usePartnerLogin() {
 
   return useMutation({
     mutationFn: async ({ email, password }: LoginCredentials) => {
+      const client = supabase as any;
       // First, check if this email belongs to a partner
-      const { data: partnerCheck } = await supabase
+      const { data: partnerCheck } = await client
         .from('vr_partners')
         .select('id, name, is_active')
         .eq('email', email)
@@ -149,7 +151,7 @@ export function usePartnerLogin() {
       }
 
       // Link partner to auth user if not already linked
-      await supabase
+      await client
         .from('vr_partners')
         .update({ auth_user_id: data.user.id })
         .eq('email', email)
@@ -177,6 +179,7 @@ export function usePartnerSignup() {
 
   return useMutation({
     mutationFn: async ({ email, password, partnerName, phone }: SignupData) => {
+      const client = supabase as any;
       // First, create the Supabase Auth user
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
@@ -198,7 +201,7 @@ export function usePartnerSignup() {
       }
 
       // Check if partner record already exists
-      const { data: existingPartner } = await supabase
+      const { data: existingPartner } = await client
         .from('vr_partners')
         .select('id')
         .eq('email', email)
@@ -206,7 +209,7 @@ export function usePartnerSignup() {
 
       if (existingPartner) {
         // Link existing partner to auth user
-        await supabase
+        await client
           .from('vr_partners')
           .update({ auth_user_id: authData.user.id })
           .eq('id', existingPartner.id);
@@ -226,7 +229,7 @@ export function usePartnerSignup() {
         .replace(/^-+|-+$/g, '')
         .substring(0, 50);
 
-      const { data: partner, error: partnerError } = await supabase
+      const { data: partner, error: partnerError } = await client
         .from('vr_partners')
         .insert({
           name: partnerName,
@@ -291,8 +294,9 @@ export function usePartnerLogout() {
 export function usePartnerPasswordReset() {
   return useMutation({
     mutationFn: async (email: string) => {
+      const client = supabase as any;
       // Verify this is a partner email
-      const { data: partnerCheck } = await supabase
+      const { data: partnerCheck } = await client
         .from('vr_partners')
         .select('id')
         .eq('email', email)

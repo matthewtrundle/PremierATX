@@ -4,7 +4,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { VRPartnerProvider } from '@/contexts/VRPartnerContext';
-import { PartnerStorefront } from '@/pages/partner/PartnerStorefront';
+import { PartnerStorefront } from '@/views/partner/PartnerStorefront';
 import { VendorBrowser } from '@/components/vendor/VendorBrowser';
 import { VendorProfile } from '@/components/vendor/VendorProfile';
 import { PartyCreationWizard } from '@/components/party/PartyCreationWizard';

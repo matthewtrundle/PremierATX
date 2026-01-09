@@ -46,9 +46,15 @@ export const DeliveryWidget: React.FC = () => {
   
   // Group order handler removed for cleanup
   
-  // Check for persistent add to order flag
-  const addToOrderFlag = localStorage.getItem('partyondelivery_add_to_order') === 'true';
-  
+  // Check for persistent add to order flag (initialized on client-side only)
+  const [addToOrderFlag, setAddToOrderFlag] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setAddToOrderFlag(localStorage.getItem('partyondelivery_add_to_order') === 'true');
+    }
+  }, []);
+
   // ALWAYS start on order-continuation
   const [currentStep, setCurrentStep] = useState<DeliveryStep>('order-continuation');
   const [deliveryInfo, setDeliveryInfo] = useLocalStorage<DeliveryInfo>('partyondelivery_delivery_info', {

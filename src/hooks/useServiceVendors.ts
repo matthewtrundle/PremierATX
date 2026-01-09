@@ -12,6 +12,9 @@ import {
 } from '@/types/partyPlanning';
 import { toast } from 'sonner';
 
+// Type bypass for tables not yet in Supabase types
+const db = supabase as any;
+
 // Query keys
 export const vendorKeys = {
   all: ['service-vendors'] as const,
@@ -34,7 +37,7 @@ export function useServiceVendors(options?: {
   return useQuery({
     queryKey: vendorKeys.list(options || {}),
     queryFn: async () => {
-      let query = supabase
+      let query = db
         .from('service_vendors')
         .select('*')
         .order('is_featured', { ascending: false })
@@ -76,7 +79,7 @@ export function useServiceVendor(id: string | undefined) {
     queryFn: async () => {
       if (!id) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_vendors')
         .select('*')
         .eq('id', id)
@@ -100,7 +103,7 @@ export function useServiceVendorBySlug(slug: string | undefined) {
     queryFn: async () => {
       if (!slug) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_vendors')
         .select('*')
         .eq('slug', slug)
@@ -128,7 +131,7 @@ export function useVendorWithPackages(id: string | undefined) {
     queryFn: async () => {
       if (!id) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_vendors')
         .select(`
           *,
@@ -156,7 +159,7 @@ export function useVendorsByType(type: VendorType | undefined) {
     queryFn: async () => {
       if (!type) return [];
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_vendors')
         .select('*')
         .eq('vendor_type', type)
@@ -181,7 +184,7 @@ export function useCreateServiceVendor() {
 
   return useMutation({
     mutationFn: async (vendor: ServiceVendorInsert) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_vendors')
         .insert(vendor)
         .select()
@@ -210,7 +213,7 @@ export function useUpdateServiceVendor() {
 
   return useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: ServiceVendorUpdate }) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('service_vendors')
         .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', id)
@@ -240,7 +243,7 @@ export function useDeleteServiceVendor() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await db
         .from('service_vendors')
         .update({ is_active: false, updated_at: new Date().toISOString() })
         .eq('id', id);
@@ -270,7 +273,7 @@ export function useSearchVendors(searchTerm: string, options?: {
     queryFn: async () => {
       if (!searchTerm || searchTerm.length < 2) return [];
 
-      let query = supabase
+      let query = db
         .from('service_vendors')
         .select('*')
         .eq('is_active', true)

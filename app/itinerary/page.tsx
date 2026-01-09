@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 
 const ItineraryPage = dynamic(
-  () => import('@/pages/ItineraryPage'),
+  () => import('@/views/ItineraryPage'),
   {
     ssr: false,
     loading: () => (

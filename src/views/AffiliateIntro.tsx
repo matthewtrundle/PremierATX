@@ -11,7 +11,7 @@ export const AffiliateIntro: React.FC = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <img src={logoImage} alt="Party On Delivery Logo" className="w-32 h-32 mx-auto mb-4" />
+          <img src={logoImage.src} alt="Party On Delivery Logo" className="w-32 h-32 mx-auto mb-4" />
           <h1 className="text-4xl font-bold text-brand-blue mb-2">
             Affiliate Program
           </h1>

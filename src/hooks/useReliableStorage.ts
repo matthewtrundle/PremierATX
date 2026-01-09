@@ -7,6 +7,11 @@ import { ErrorHandler } from '@/utils/errorHandler';
  */
 export function useReliableStorage<T>(key: string, initialValue: T, backupKey?: string) {
   const [value, setValue] = useState<T>(() => {
+    // Skip on server-side
+    if (typeof window === 'undefined') {
+      return initialValue;
+    }
+
     try {
       // Try primary localStorage first
       const item = localStorage.getItem(key);
@@ -31,10 +36,15 @@ export function useReliableStorage<T>(key: string, initialValue: T, backupKey?: 
   const setValueReliably = (newValue: T | ((prev: T) => T)) => {
     try {
       const valueToStore = typeof newValue === 'function' ? (newValue as (prev: T) => T)(value) : newValue;
-      
+
       // Update state
       setValue(valueToStore);
-      
+
+      // Skip storage on server-side
+      if (typeof window === 'undefined') {
+        return true;
+      }
+
       // Store in multiple places for reliability
       // Primary storage
       localStorage.setItem(key, JSON.stringify(valueToStore));
@@ -52,8 +62,10 @@ export function useReliableStorage<T>(key: string, initialValue: T, backupKey?: 
   const clearValue = () => {
     try {
       setValue(initialValue);
-      localStorage.removeItem(key);
-      cacheManager.remove(backupKey || `${key}_backup`);
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(key);
+        cacheManager.remove(backupKey || `${key}_backup`);
+      }
     } catch (error) {
       ErrorHandler.logError(error, `useReliableStorage.clear.${key}`);
     }

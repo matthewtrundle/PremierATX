@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 // Dynamically import checkout to avoid SSR issues with localStorage, etc
 const Checkout = dynamic(
-  () => import('@/pages/Checkout'),
+  () => import('@/views/Checkout'),
   {
     ssr: false,
     loading: () => (

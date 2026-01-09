@@ -31,8 +31,8 @@ export const AgeVerification: React.FC<AgeVerificationProps> = ({ onVerified, on
         <Card className="w-full max-w-md mx-auto shadow-floating animate-scale-in">
           <CardContent className="p-8 text-center space-y-6">
             <div className="space-y-4">
-              <img 
-                src={logoImage} 
+              <img
+                src={logoImage.src}
                 alt="Party On Delivery Logo" 
                 className="w-20 h-20 mx-auto"
               />

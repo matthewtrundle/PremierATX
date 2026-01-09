@@ -12,6 +12,9 @@ import {
 import { toast } from 'sonner';
 import { partyKeys } from './useParties';
 
+// Type bypass for tables not yet in Supabase types
+const db = supabase as any;
+
 // Query keys
 export const bookingKeys = {
   all: ['party-bookings'] as const,
@@ -30,7 +33,7 @@ export function usePartyBookings(partyId: string | undefined) {
     queryFn: async () => {
       if (!partyId) return [];
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_bookings')
         .select(`
           *,
@@ -59,7 +62,7 @@ export function usePartyBooking(id: string | undefined) {
     queryFn: async () => {
       if (!id) return null;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_bookings')
         .select(`
           *,
@@ -91,7 +94,7 @@ export function useBookingsByVendor(vendorId: string | undefined, options?: {
     queryFn: async () => {
       if (!vendorId) return [];
 
-      let query = supabase
+      let query = db
         .from('party_bookings')
         .select(`
           *,
@@ -131,7 +134,7 @@ export function useCreatePartyBooking() {
 
   return useMutation({
     mutationFn: async (booking: PartyBookingInsert) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_bookings')
         .insert(booking)
         .select(`
@@ -165,7 +168,7 @@ export function useUpdatePartyBooking() {
 
   return useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: PartyBookingUpdate }) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_bookings')
         .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', id)
@@ -213,7 +216,7 @@ export function useUpdateBookingStatus() {
         updates.paid_at = new Date().toISOString();
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_bookings')
         .update(updates)
         .eq('id', id)
@@ -244,7 +247,7 @@ export function useDeletePartyBooking() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await db
         .from('party_bookings')
         .delete()
         .eq('id', id);
@@ -271,7 +274,7 @@ export function useCancelBooking() {
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_bookings')
         .update({
           status: 'cancelled',
@@ -305,7 +308,7 @@ export function useBulkCreateBookings() {
 
   return useMutation({
     mutationFn: async (bookings: PartyBookingInsert[]) => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('party_bookings')
         .insert(bookings)
         .select();

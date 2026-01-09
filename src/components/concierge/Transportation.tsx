@@ -39,7 +39,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-3 passengers',
       hourlyRate: 124.74,
       features: ['Professional chauffeur', 'Leather interior', 'WiFi', 'Complimentary water'],
-      image: executiveSedanImg
+      image: executiveSedanImg.src
     },
     {
       id: 'executive-suv',
@@ -48,7 +48,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-6 passengers',
       hourlyRate: 138.60,
       features: ['Professional chauffeur', 'Premium sound system', 'Extra cargo space', 'Refreshments'],
-      image: executiveSuvImg
+      image: executiveSuvImg.src
     },
     {
       id: 'premium-sedan',
@@ -57,7 +57,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-3 passengers',
       hourlyRate: 165.00,
       features: ['Professional chauffeur', 'Premium leather', 'Advanced climate control', 'Premium amenities'],
-      image: premiumSedanImg
+      image: premiumSedanImg.src
     },
     {
       id: 'sprinter-van-14',
@@ -66,7 +66,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-14 passengers',
       hourlyRate: 168.96,
       features: ['Professional driver', 'Climate control', 'Comfortable seating', 'Luggage space'],
-      image: sprinterVanImg
+      image: sprinterVanImg.src
     },
     {
       id: '23-pax-mini',
@@ -75,7 +75,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-23 passengers',
       hourlyRate: 173.25,
       features: ['Professional driver', 'Air conditioning', 'PA system', 'Storage'],
-      image: mini23PaxImg
+      image: mini23PaxImg.src
     },
     {
       id: '29-pax-mini',
@@ -84,7 +84,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-29 passengers',
       hourlyRate: 181.91,
       features: ['Professional driver', 'Climate control', 'Audio system', 'Luggage compartment'],
-      image: mini29PaxImg
+      image: mini29PaxImg.src
     },
     {
       id: '23-pax-executive',
@@ -93,7 +93,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-23 passengers',
       hourlyRate: 199.24,
       features: ['Professional driver', 'Premium seating', 'Entertainment system', 'WiFi'],
-      image: executive23PaxImg
+      image: executive23PaxImg.src
     },
     {
       id: '29-pax-executive',
@@ -102,7 +102,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-29 passengers',
       hourlyRate: 207.90,
       features: ['Professional driver', 'Leather seats', 'Premium audio', 'Climate zones'],
-      image: executive29PaxImg
+      image: executive29PaxImg.src
     },
     {
       id: '37-pax-executive',
@@ -111,7 +111,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-37 passengers',
       hourlyRate: 217.80,
       features: ['Professional driver', 'Executive seating', 'Entertainment', 'Premium amenities'],
-      image: executive37PaxImg
+      image: executive37PaxImg.src
     },
     {
       id: '49-pax-coach',
@@ -120,7 +120,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-49 passengers',
       hourlyRate: 233.89,
       features: ['Professional driver', 'Reclining seats', 'Restroom', 'Entertainment system'],
-      image: coach49PaxImg
+      image: coach49PaxImg.src
     },
     {
       id: '8-pax-limo',
@@ -129,7 +129,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-8 passengers',
       hourlyRate: 173.25,
       features: ['Professional chauffeur', 'Bar area', 'Premium sound', 'Mood lighting'],
-      image: limo8PaxImg
+      image: limo8PaxImg.src
     },
     {
       id: '12-pax-sprinter-limo',
@@ -138,7 +138,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-12 passengers',
       hourlyRate: 233.89,
       features: ['Professional chauffeur', 'Luxury seating', 'Bar service', 'LED lighting'],
-      image: sprinterLimo12PaxImg
+      image: sprinterLimo12PaxImg.src
     },
     {
       id: '16-pax-limo-bus',
@@ -147,7 +147,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-16 passengers',
       hourlyRate: 272.25,
       features: ['Professional driver', 'Dance floor', 'Premium sound system', 'Bar'],
-      image: limoBus16PaxImg
+      image: limoBus16PaxImg.src
     },
     {
       id: '32-pax-limo-coach',
@@ -156,7 +156,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '1-32 passengers',
       hourlyRate: 389.81,
       features: ['Professional driver', 'Luxury interior', 'Entertainment system', 'Full bar'],
-      image: limoCoach32PaxImg
+      image: limoCoach32PaxImg.src
     },
     {
       id: 'ada-10-pax',
@@ -165,7 +165,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '10 passengers + 2 wheelchairs',
       hourlyRate: 190.58,
       features: ['Professional driver', 'Wheelchair lift', 'ADA compliant', 'Secure tie-downs'],
-      image: ada10PaxImg
+      image: ada10PaxImg.src
     },
     {
       id: 'ada-29-pax',
@@ -174,7 +174,7 @@ const Transportation: React.FC<TransportationProps> = ({ onBack }) => {
       capacity: '29 passengers + 2 wheelchairs',
       hourlyRate: 217.80,
       features: ['Professional driver', 'Wheelchair accessible', 'Lift system', 'ADA certified'],
-      image: ada29PaxImg
+      image: ada29PaxImg.src
     }
   ];
 

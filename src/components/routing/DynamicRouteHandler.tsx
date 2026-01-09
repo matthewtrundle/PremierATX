@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { StandaloneCoverPage } from '@/components/cover-pages/StandaloneCoverPage';
-import AdminLogin from '@/pages/AdminLogin';
+import AdminLogin from '@/views/AdminLogin';
 
 export const DynamicRouteHandler: React.FC = () => {
   const location = useLocation();

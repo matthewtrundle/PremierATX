@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 const AdminDashboard = dynamic(
-  () => import('@/pages/AdminDashboard'),
+  () => import('@/views/AdminDashboard'),
   {
     ssr: false,
     loading: () => (

@@ -8,11 +8,16 @@ export const useSessionTracking = () => {
   
   const linkSessionToUser = async (userEmail: string) => {
     try {
+      // Skip on server-side
+      if (typeof window === 'undefined') {
+        return;
+      }
+
       // Skip session linking in admin contexts to avoid unnecessary processing
-      const isAdminContext = window.location.pathname.includes('/admin') || 
+      const isAdminContext = window.location.pathname.includes('/admin') ||
                             userEmail === 'brian@partyondelivery.com' ||
                             localStorage.getItem('adminSession');
-      
+
       if (isAdminContext) {
         return; // Skip session linking for admin users
       }

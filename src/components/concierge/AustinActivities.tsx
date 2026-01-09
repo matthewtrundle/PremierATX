@@ -164,7 +164,7 @@ const AustinActivities: React.FC<AustinActivitiesProps> = ({ onBack }) => {
       participants: '2-8 people',
       highlights: ['The Continental Club', "Antone's", 'Red River District', 'Local musician guide'],
       availability: 'Tonight at 7 PM',
-      imageUrl: liveMusicImg
+      imageUrl: liveMusicImg.src
     },
     {
       id: 'food-truck-crawl',
@@ -177,7 +177,7 @@ const AustinActivities: React.FC<AustinActivitiesProps> = ({ onBack }) => {
       participants: '2-12 people',
       highlights: ['5 food truck stops', 'Local favorites', 'Vegetarian options', 'Food guide'],
       availability: 'Daily at 11 AM & 6 PM',
-      imageUrl: foodTruckImg
+      imageUrl: foodTruckImg.src
     },
     {
       id: 'kayak-adventure',
@@ -190,7 +190,7 @@ const AustinActivities: React.FC<AustinActivitiesProps> = ({ onBack }) => {
       participants: '1-8 people',
       highlights: ['Kayak rental included', 'Guided tour', 'Skyline photography', 'Safety equipment'],
       availability: 'Multiple times daily',
-      imageUrl: kayakImg
+      imageUrl: kayakImg.src
     },
     {
       id: 'mural-art-tour',
@@ -203,7 +203,7 @@ const AustinActivities: React.FC<AustinActivitiesProps> = ({ onBack }) => {
       participants: '2-15 people',
       highlights: ['Famous murals', 'Artist stories', 'Photo opportunities', 'Art history'],
       availability: 'Daily at 10 AM & 3 PM',
-      imageUrl: muralImg
+      imageUrl: muralImg.src
     },
     {
       id: 'bbq-masterclass',
@@ -216,7 +216,7 @@ const AustinActivities: React.FC<AustinActivitiesProps> = ({ onBack }) => {
       participants: '6-12 people',
       highlights: ['Hands-on cooking', 'Meat selection', 'Smoking techniques', 'Full meal included'],
       availability: 'Weekends only',
-      imageUrl: bbqImg
+      imageUrl: bbqImg.src
     },
     {
       id: 'bat-watching',
@@ -229,7 +229,7 @@ const AustinActivities: React.FC<AustinActivitiesProps> = ({ onBack }) => {
       participants: '2-20 people',
       highlights: ['Best viewing spots', 'Bat facts', 'Sunset viewing', 'Photography tips'],
       availability: 'Every evening at sunset',
-      imageUrl: batImg
+      imageUrl: batImg.src
     },
     {
       id: 'brewery-hopping',
@@ -242,7 +242,7 @@ const AustinActivities: React.FC<AustinActivitiesProps> = ({ onBack }) => {
       participants: '4-10 people',
       highlights: ['4 brewery stops', 'Transportation included', 'Beer tastings', 'Local beer expert'],
       availability: 'Friday-Sunday',
-      imageUrl: breweryImg
+      imageUrl: breweryImg.src
     },
     {
       id: 'hill-country-day-trip',
@@ -255,7 +255,7 @@ const AustinActivities: React.FC<AustinActivitiesProps> = ({ onBack }) => {
       participants: '2-6 people',
       highlights: ['Wine tastings', 'Scenic drives', 'Historic towns', 'Lunch included'],
       availability: 'Daily departures',
-      imageUrl: hillCountryImg
+      imageUrl: hillCountryImg.src
     }
   ];
 

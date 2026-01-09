@@ -29,19 +29,19 @@ const boats: Boat[] = [
   {
     name: "Meeseeks / The Irony",
     capacity: "25-30 max",
-    images: [meseeks1, meseeks2, meseeks3, irony1, irony2],
+    images: [meseeks1.src, meseeks2.src, meseeks3.src, irony1.src, irony2.src],
     description: "Perfect for medium-sized groups looking for an unforgettable Lake Travis experience. These boats feature covered seating, sound systems, and comfortable amenities for your party."
   },
   {
     name: "Day Tripper",
     capacity: "15-25 Guests",
-    images: [dayTripper1, dayTripper2, dayTripper3, dayTripper4, dayTripper5],
+    images: [dayTripper1.src, dayTripper2.src, dayTripper3.src, dayTripper4.src, dayTripper5.src],
     description: "Ideal for smaller groups seeking a premium Lake Travis experience. Features comfortable seating, excellent sound system, and all the amenities needed for an amazing day on the water."
   },
   {
     name: "Clever Girl",
     capacity: "31-75 Guests",
-    images: [cleverGirl1, cleverGirl2, cleverGirl3, cleverGirl4, cleverGirl5],
+    images: [cleverGirl1.src, cleverGirl2.src, cleverGirl3.src, cleverGirl4.src, cleverGirl5.src],
     description: "Our flagship party boat featuring the iconic Texas flag deck, 14 disco balls, and massive space for epic celebrations. Perfect for large groups, corporate events, and unforgettable bachelor/bachelorette parties."
   }
 ];

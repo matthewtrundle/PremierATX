@@ -54,7 +54,9 @@ export interface VRPartnerInsert {
   is_demo?: boolean;
 }
 
-export interface VRPartnerUpdate extends Partial<VRPartnerInsert> {}
+export interface VRPartnerUpdate extends Partial<VRPartnerInsert> {
+  updated_at?: string;
+}
 
 // ============================================================================
 // Service Vendors (Supply Side)
@@ -136,7 +138,9 @@ export interface ServiceVendorInsert {
   is_active?: boolean;
 }
 
-export interface ServiceVendorUpdate extends Partial<ServiceVendorInsert> {}
+export interface ServiceVendorUpdate extends Partial<ServiceVendorInsert> {
+  updated_at?: string;
+}
 
 // ============================================================================
 // Service Packages (Vendor Offerings)
@@ -190,7 +194,9 @@ export interface ServicePackageInsert {
   is_active?: boolean;
 }
 
-export interface ServicePackageUpdate extends Partial<ServicePackageInsert> {}
+export interface ServicePackageUpdate extends Partial<ServicePackageInsert> {
+  updated_at?: string;
+}
 
 // ============================================================================
 // Parties (Core Entity)
@@ -338,7 +344,11 @@ export interface PartyBookingInsert {
   special_requests?: string;
 }
 
-export interface PartyBookingUpdate extends Partial<PartyBookingInsert> {}
+export interface PartyBookingUpdate extends Partial<PartyBookingInsert> {
+  updated_at?: string;
+  paid_at?: string;
+  confirmation_code?: string;
+}
 
 // ============================================================================
 // Party Guests
@@ -382,7 +392,11 @@ export interface PartyGuestInsert {
   is_organizer?: boolean;
 }
 
-export interface PartyGuestUpdate extends Partial<PartyGuestInsert> {}
+export interface PartyGuestUpdate extends Partial<PartyGuestInsert> {
+  updated_at?: string;
+  rsvp_at?: string;
+  paid_at?: string;
+}
 
 // ============================================================================
 // AI Planning Sessions

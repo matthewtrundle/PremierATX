@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 
 const BoatsPage = dynamic(
-  () => import('@/pages/BoatsPage'),
+  () => import('@/views/BoatsPage'),
   {
     ssr: false,
     loading: () => (
