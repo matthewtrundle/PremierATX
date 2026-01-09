@@ -6,7 +6,7 @@ import { VideoBackground } from "@/components/common/VideoBackground";
 import { PerformanceMonitor } from "@/components/common/PerformanceMonitor";
 import { supabase } from '@/integrations/supabase/client';
 import logo from '@/assets/party-on-delivery-logo.svg';
-import customLogo from '/lovable-uploads/d5d7d4eb-b4e8-4a16-bbf6-2e8551550bd4.png';
+import customLogo from '@/assets/party-on-delivery-custom-logo.png';
 
 interface AppConfig {
   app_name: string;
