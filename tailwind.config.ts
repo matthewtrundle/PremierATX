@@ -19,6 +19,20 @@ export default {
 		},
 		extend: {
 			colors: {
+				/* Premier ATX Brand Colors */
+				premier: {
+					ink: 'hsl(var(--premier-ink))',
+					'ink-soft': 'hsl(var(--premier-ink-soft))',
+					mist: 'hsl(var(--premier-mist))',
+					cloud: 'hsl(var(--premier-cloud))',
+					accent: 'hsl(var(--premier-accent))',
+					'accent-soft': 'hsl(var(--premier-accent-soft))',
+					sage: 'hsl(var(--premier-sage))',
+					'sage-soft': 'hsl(var(--premier-sage-soft))',
+					sand: 'hsl(var(--premier-sand))',
+					'sand-dark': 'hsl(var(--premier-sand-dark))',
+				},
+				/* shadcn/ui compatibility */
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -27,11 +41,6 @@ export default {
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',
-					glow: 'hsl(var(--primary-glow))'
-				},
-				'brand-blue': {
-					DEFAULT: 'hsl(var(--brand-blue))',
-					foreground: 'hsl(var(--brand-blue-foreground))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -77,11 +86,9 @@ export default {
 				}
 			},
 			fontFamily: {
-				'sans': ['Montserrat', 'sans-serif'], // Set Montserrat as default
-				'oswald': ['Oswald', 'sans-serif'],
-				'playfair': ['Playfair Display', 'serif'],
-				'montserrat': ['Montserrat', 'sans-serif'],
-				'inter': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'], // Party planning UI
+				'sans': ['var(--font-inter)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+				'display': ['var(--font-dm-sans)', 'DM Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+				'body': ['var(--font-inter)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
 			},
 			aspectRatio: {
 				'3/2': '3 / 2',
@@ -147,15 +154,17 @@ export default {
 				'slide-down': 'slide-down 18s linear infinite'
 			},
 			backgroundImage: {
-				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-secondary': 'var(--gradient-secondary)',
-				'gradient-success': 'var(--gradient-success)',
-				'gradient-danger': 'var(--gradient-danger)'
+				'gradient-warm': 'linear-gradient(135deg, hsl(var(--premier-sand)) 0%, hsl(var(--premier-mist)) 100%)',
+				'gradient-accent': 'linear-gradient(135deg, hsl(var(--premier-accent)) 0%, hsl(var(--premier-accent-soft)) 100%)',
 			},
 			boxShadow: {
-				'glow': 'var(--shadow-glow)',
-				'card': 'var(--shadow-card)',
-				'floating': 'var(--shadow-floating)'
+				'sm': 'var(--shadow-sm)',
+				'md': 'var(--shadow-md)',
+				'lg': 'var(--shadow-lg)',
+				'xl': 'var(--shadow-xl)',
+				'card': 'var(--shadow-md)',
+				'card-hover': 'var(--shadow-lg)',
+				'floating': 'var(--shadow-xl)',
 			}
 		}
 	},

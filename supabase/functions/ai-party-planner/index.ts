@@ -318,25 +318,93 @@ function extractVendorRecommendations(response: string, vendors: Vendor[]): Vend
 // Mock response generator for local development
 function getMockResponse(messages: Message[], context: PartyContext): string {
   const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || '';
+  const hasPartyContext = context.partyType && context.guestCount;
 
-  // Contextual mock responses based on conversation state
+  // If we have party context (from share token), provide contextual responses
+  if (hasPartyContext) {
+    const partyType = context.partyType === 'bachelor' ? 'bachelor' : 'bachelorette';
+    const guestCount = context.guestCount;
+
+    // First message - acknowledge the party details
+    if (messages.length <= 1) {
+      return `[MOCK MODE - No API Key] I can see you're planning a ${partyType} party for ${guestCount} guests! That sounds like it's going to be amazing! What kind of vibe are you going for? Are you thinking:
+
+- Chill & relaxing (spa days, wine tours, pool time)
+- Wild party mode (6th Street, bars, party bus)
+- Mix of both (daytime activities + nightlife)`;
+    }
+
+    // Vibe selection
+    if (lastMessage.includes('chill') || lastMessage.includes('relax')) {
+      return `[MOCK MODE] Love it! For a chill ${partyType} party, I'd recommend:
+
+**Spa & Wellness:**
+- Mobile Spa Austin - $75/person for massages at your rental
+- Yoga & Mimosas ATX - $175/person for a fun brunch yoga session
+
+**Wine Tours:**
+- Wine Tour Austin - $125/person for Hill Country wine tasting
+
+When the AI is connected, I'll have real-time pricing and availability!`;
+    }
+
+    if (lastMessage.includes('wild') || lastMessage.includes('party')) {
+      return `[MOCK MODE] Oh yeah! For a wild ${partyType} party in Austin, here's what I'm thinking:
+
+**Transportation:**
+- Austin Party Bus - $1,200 for 4 hours (fits 20 people)
+- VIP Limo Austin - $800 for downtown bar hopping
+
+**Activities:**
+- 6th Street Bar Crawl - $45/person with VIP entry
+- Silent Disco ATX - $600 for a private party
+
+When the AI is connected, I'll customize these based on your exact dates!`;
+    }
+
+    if (lastMessage.includes('mix') || lastMessage.includes('both')) {
+      return `[MOCK MODE] Perfect choice! A mix gives you the best of both worlds. Here's a sample itinerary for ${guestCount} guests:
+
+**Day 1 - Chill Vibes:**
+- Morning: Yoga & Mimosas ($175/person)
+- Afternoon: Pool time at your rental
+- Evening: Nice dinner out
+
+**Day 2 - Party Time:**
+- Daytime: Lake Travis boat rental ($1,500 for the group)
+- Night: Party bus to 6th Street ($1,200)
+
+When the AI is connected, I'll build a custom itinerary for your actual dates!`;
+    }
+
+    // Default response with context
+    return `[MOCK MODE] Got it! For your ${partyType} party with ${guestCount} guests, we have tons of options in Austin. Some popular choices include:
+
+- **Lake Activities:** Boat rentals, kayaking, paddleboarding
+- **Entertainment:** DJs, photo booths, live music
+- **Food:** Private chefs, BBQ catering, taco bars
+
+What category interests you most? When the AI is fully connected, I'll give you specific vendor recommendations with real pricing!`;
+  }
+
+  // Original flow for parties without context
   if (messages.length <= 1) {
-    return "Hey there! I'm your AI party planner for Austin bachelor and bachelorette parties. I'm currently in mock mode for local development (no API key configured). What kind of celebration are you planning?";
+    return "[MOCK MODE - No API Key] Hey there! I'm your AI party planner for Austin bachelor and bachelorette parties. What kind of celebration are you planning?";
   }
 
   if (lastMessage.includes('bachelor') || lastMessage.includes('bachelorette')) {
-    return `Awesome! A ${lastMessage.includes('bachelor') ? 'bachelor' : 'bachelorette'} party in Austin sounds amazing! [MOCK MODE] To help you plan the perfect celebration, I'd love to know: How many guests are you expecting, and do you have a date in mind?`;
+    return `[MOCK MODE] Awesome! A ${lastMessage.includes('bachelor') ? 'bachelor' : 'bachelorette'} party in Austin sounds amazing! How many guests are you expecting, and do you have a date in mind?`;
   }
 
   if (lastMessage.match(/\d+\s*(people|guests|friends)/)) {
-    return "Great! [MOCK MODE] Now let's talk budget. Are you thinking budget-friendly (under $100/person), mid-range ($100-250/person), premium ($250-500/person), or luxury ($500+/person)?";
+    return "[MOCK MODE] Great! Now let's talk budget. Are you thinking budget-friendly (under $100/person), mid-range ($100-250/person), premium ($250-500/person), or luxury ($500+/person)?";
   }
 
   if (lastMessage.includes('budget') || lastMessage.includes('$')) {
-    return "Perfect! [MOCK MODE] I'd recommend checking out some of our amazing Austin vendors for your celebration. When the AI is fully connected, I'll be able to give you personalized recommendations based on your preferences!";
+    return "[MOCK MODE] Perfect! I'd recommend checking out some of our amazing Austin vendors. When the AI is fully connected, I'll give you personalized recommendations!";
   }
 
-  return "[MOCK MODE] Thanks for chatting! When the Vercel AI Gateway is configured, I'll be able to provide personalized party planning recommendations. For now, feel free to explore the app!";
+  return "[MOCK MODE] Thanks for chatting! When the Vercel AI Gateway is configured, I'll provide personalized party planning recommendations. For now, explore the app!";
 }
 
 // Extract and update party context from conversation

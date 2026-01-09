@@ -31,6 +31,7 @@ export interface VRPartner {
   subscription_amount: number;
   stripe_customer_id?: string;
   custom_domain?: string;
+  auth_user_id?: string;
   is_active: boolean;
   is_demo: boolean;
   created_at: string;
@@ -249,6 +250,11 @@ export interface Party {
   subtotal: number;
   total_savings: number;
   total_amount: number;
+  // Share token system (for personalized party links)
+  share_token?: string;
+  share_token_created_at?: string;
+  created_by_partner?: boolean;
+  partner_notes?: string;
   created_at: string;
   updated_at: string;
   // Joined data
@@ -275,6 +281,9 @@ export interface PartyInsert {
   preferences?: PartyPreferences;
   special_requests?: string;
   status?: PartyStatus;
+  // Share token system (for personalized party links)
+  created_by_partner?: boolean;
+  partner_notes?: string;
 }
 
 export interface PartyUpdate extends Partial<PartyInsert> {}

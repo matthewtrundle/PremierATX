@@ -1,7 +1,7 @@
-// Top Navigation - Airbnb Style
-// Clean desktop navigation with partner branding
+// Top Navigation - Premium Style
+// Clean, sophisticated desktop navigation with partner branding
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useVRPartnerContext } from '@/contexts/VRPartnerContext';
 import {
@@ -11,13 +11,11 @@ import {
   ShoppingBag,
   Sparkles,
   X,
-  ChevronDown,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import '@/styles/party-design-tokens.css';
 
 interface TopNavProps {
-  transparent?: boolean; // For overlay on hero sections
+  transparent?: boolean;
   className?: string;
   cartItemCount?: number;
 }
@@ -29,6 +27,16 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Track scroll for sticky header style
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,29 +48,33 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
   };
 
   const isActive = (path: string) => {
-    const currentPath = location.pathname;
-    return currentPath.includes(path);
+    return location.pathname.includes(path);
   };
 
   const navLinks = [
-    { path: '/vendors', label: 'Browse Vendors' },
-    { path: '/plan', label: 'Plan Party' },
+    { path: '/vendors', label: 'Browse' },
+    { path: '/plan', label: 'Plan' },
     { path: '/my-parties', label: 'My Parties' },
   ];
+
+  // Use terracotta accent as default
+  const accentColor = primaryColor || 'hsl(16, 65%, 50%)';
+
+  const showBackground = isScrolled || !transparent;
 
   return (
     <>
       <header
         className={cn(
           'sticky top-0 z-50 w-full transition-all duration-300',
-          transparent
-            ? 'bg-transparent'
-            : 'bg-white border-b border-gray-200 shadow-sm',
+          showBackground
+            ? 'bg-white/95 backdrop-blur-sm border-b border-premier-sand-dark/20 shadow-sm'
+            : 'bg-transparent',
           className
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+          <div className="flex items-center justify-between h-16 lg:h-18">
             {/* Logo */}
             <button
               onClick={() => navigate(getPartnerPath('/'))}
@@ -72,17 +84,16 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
                 <img
                   src={logoUrl}
                   alt={partner?.name || 'Logo'}
-                  className="h-8 lg:h-10 w-auto object-contain"
+                  className="h-8 lg:h-9 w-auto object-contain"
                 />
               ) : (
                 <span
                   className={cn(
-                    'text-xl lg:text-2xl font-bold',
-                    transparent ? 'text-white' : ''
+                    'text-xl lg:text-2xl font-display font-bold tracking-tight',
+                    !showBackground && transparent ? 'text-white' : 'text-premier-ink'
                   )}
-                  style={{ color: transparent ? undefined : primaryColor }}
                 >
-                  {partner?.name || 'Party Plan'}
+                  {partner?.name || 'PremierATX'}
                 </span>
               )}
             </button>
@@ -94,12 +105,12 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
                   key={link.path}
                   onClick={() => navigate(getPartnerPath(link.path))}
                   className={cn(
-                    'px-4 py-2 rounded-full text-sm font-medium transition-colors',
-                    transparent
+                    'px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
+                    !showBackground && transparent
                       ? 'text-white hover:bg-white/10'
                       : isActive(link.path)
-                      ? 'bg-gray-100 text-gray-900'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-premier-sand text-premier-ink'
+                      : 'text-premier-ink-soft hover:bg-premier-mist hover:text-premier-ink'
                   )}
                 >
                   {link.label}
@@ -113,10 +124,10 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
               <button
                 onClick={() => setIsSearchOpen(true)}
                 className={cn(
-                  'p-2.5 rounded-full transition-colors',
-                  transparent
+                  'p-2.5 rounded-xl transition-all duration-200',
+                  !showBackground && transparent
                     ? 'text-white hover:bg-white/10'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    : 'text-premier-ink-soft hover:bg-premier-mist hover:text-premier-ink'
                 )}
                 aria-label="Search"
               >
@@ -127,14 +138,9 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
               <button
                 onClick={() => navigate(getPartnerPath('/plan'))}
                 className={cn(
-                  'hidden md:flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-colors',
-                  transparent
-                    ? 'bg-white text-gray-900 hover:bg-gray-100'
-                    : 'text-white'
+                  'hidden md:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200',
+                  'bg-premier-accent text-white hover:brightness-105 shadow-sm'
                 )}
-                style={{
-                  backgroundColor: transparent ? undefined : primaryColor,
-                }}
               >
                 <Sparkles className="w-4 h-4" />
                 Plan with AI
@@ -144,19 +150,16 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
               <button
                 onClick={() => navigate(getPartnerPath('/party'))}
                 className={cn(
-                  'relative p-2.5 rounded-full transition-colors',
-                  transparent
+                  'relative p-2.5 rounded-xl transition-all duration-200',
+                  !showBackground && transparent
                     ? 'text-white hover:bg-white/10'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    : 'text-premier-ink-soft hover:bg-premier-mist hover:text-premier-ink'
                 )}
                 aria-label="View party"
               >
                 <ShoppingBag className="w-5 h-5" />
                 {cartItemCount > 0 && (
-                  <span
-                    className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center rounded-full text-xs font-bold text-white"
-                    style={{ backgroundColor: primaryColor }}
-                  >
+                  <span className="absolute -top-0.5 -right-0.5 w-5 h-5 flex items-center justify-center rounded-full text-xs font-bold text-white bg-premier-accent">
                     {cartItemCount > 9 ? '9+' : cartItemCount}
                   </span>
                 )}
@@ -165,20 +168,15 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
               {/* User Menu Button */}
               <button
                 className={cn(
-                  'flex items-center gap-2 p-2 pl-3 rounded-full border transition-colors',
-                  transparent
+                  'flex items-center gap-2 p-1.5 pl-3 rounded-full border-2 transition-all duration-200',
+                  !showBackground && transparent
                     ? 'border-white/30 text-white hover:bg-white/10'
-                    : 'border-gray-200 text-gray-600 hover:shadow-md'
+                    : 'border-premier-sand-dark/30 text-premier-ink-soft hover:border-premier-sand-dark/50 hover:shadow-md'
                 )}
               >
                 <Menu className="w-4 h-4" />
-                <div
-                  className={cn(
-                    'w-7 h-7 rounded-full flex items-center justify-center',
-                    transparent ? 'bg-white/20' : 'bg-gray-500'
-                  )}
-                >
-                  <User className={cn('w-4 h-4', transparent ? 'text-white' : 'text-white')} />
+                <div className="w-7 h-7 rounded-full flex items-center justify-center bg-premier-ink-soft">
+                  <User className="w-4 h-4 text-white" />
                 </div>
               </button>
 
@@ -186,10 +184,10 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
                 className={cn(
-                  'lg:hidden p-2.5 rounded-full transition-colors',
-                  transparent
+                  'lg:hidden p-2.5 rounded-xl transition-all duration-200',
+                  !showBackground && transparent
                     ? 'text-white hover:bg-white/10'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    : 'text-premier-ink-soft hover:bg-premier-mist'
                 )}
                 aria-label="Open menu"
               >
@@ -202,29 +200,29 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
 
       {/* Search Overlay */}
       {isSearchOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-start justify-center pt-20">
-          <div className="w-full max-w-2xl mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
+        <div className="fixed inset-0 z-50 bg-premier-ink/40 backdrop-blur-sm flex items-start justify-center pt-20">
+          <div className="w-full max-w-2xl mx-4 bg-white rounded-2xl shadow-xl overflow-hidden animate-scale-in">
             <form onSubmit={handleSearch} className="relative">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-premier-ink-soft" />
               <input
                 type="text"
                 placeholder="Search vendors, activities, services..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
-                className="w-full pl-14 pr-14 py-5 text-lg focus:outline-none"
+                className="w-full pl-14 pr-14 py-5 text-lg text-premier-ink placeholder:text-premier-ink-soft/50 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(false)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-100"
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-xl hover:bg-premier-mist transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-premier-ink-soft" />
               </button>
             </form>
-            <div className="border-t border-gray-100 px-6 py-4">
-              <p className="text-sm text-gray-500">
-                Try searching for "boat rental", "private chef", or "DJ"
+            <div className="border-t border-premier-sand-dark/20 px-6 py-4">
+              <p className="text-sm text-premier-ink-soft">
+                Try "boat rental", "private chef", or "DJ"
               </p>
             </div>
           </div>
@@ -235,17 +233,17 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-premier-ink/40 backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
           />
           <div className="absolute right-0 top-0 h-full w-80 max-w-full bg-white shadow-xl animate-slide-in-right">
-            <div className="flex items-center justify-between p-4 border-b border-gray-100">
-              <span className="font-semibold text-gray-900">Menu</span>
+            <div className="flex items-center justify-between p-4 border-b border-premier-sand-dark/20">
+              <span className="font-display font-semibold text-premier-ink">Menu</span>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 rounded-full hover:bg-gray-100"
+                className="p-2 rounded-xl hover:bg-premier-mist transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-premier-ink-soft" />
               </button>
             </div>
             <nav className="p-4 space-y-2">
@@ -257,23 +255,22 @@ export function TopNav({ transparent = false, className, cartItemCount = 0 }: To
                     setIsMobileMenuOpen(false);
                   }}
                   className={cn(
-                    'w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-colors',
+                    'w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-all duration-200',
                     isActive(link.path)
-                      ? 'bg-gray-100 text-gray-900'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      ? 'bg-premier-sand text-premier-ink'
+                      : 'text-premier-ink-soft hover:bg-premier-mist hover:text-premier-ink'
                   )}
                 >
                   {link.label}
                 </button>
               ))}
-              <hr className="my-4 border-gray-100" />
+              <hr className="my-4 border-premier-sand-dark/20" />
               <button
                 onClick={() => {
                   navigate(getPartnerPath('/plan'));
                   setIsMobileMenuOpen(false);
                 }}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-white transition-colors"
-                style={{ backgroundColor: primaryColor }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-white bg-premier-accent hover:brightness-105 transition-all duration-200"
               >
                 <Sparkles className="w-5 h-5" />
                 Plan with AI

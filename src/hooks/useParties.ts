@@ -22,6 +22,7 @@ export const partyKeys = {
   byPartner: (partnerId: string) => [...partyKeys.all, 'partner', partnerId] as const,
   byOrganizer: (email: string) => [...partyKeys.all, 'organizer', email] as const,
   withDetails: (id: string) => [...partyKeys.all, 'with-details', id] as const,
+  byShareToken: (token: string) => [...partyKeys.all, 'share-token', token] as const,
 };
 
 // Fetch all parties (for admin)
@@ -328,4 +329,137 @@ export function usePartyStats(partnerId: string | undefined) {
     },
     enabled: !!partnerId,
   });
+}
+
+// =============================================================================
+// SHARE TOKEN HOOKS - For personalized party links
+// =============================================================================
+
+// Type for party with partner branding (used in guest landing page)
+export interface PartyWithPartnerBranding {
+  party: Party;
+  partner: {
+    id: string;
+    name: string;
+    slug: string;
+    logo_url: string | null;
+    branding_config: {
+      primary_color?: string;
+      secondary_color?: string;
+      font_family?: string;
+      tagline?: string;
+      hero_image?: string;
+      description?: string;
+    };
+  } | null;
+}
+
+// Fetch a party by its share token (for guest landing page)
+// This is used when guests click their personalized party link
+export function usePartyByShareToken(token: string | undefined) {
+  return useQuery({
+    queryKey: partyKeys.byShareToken(token || ''),
+    queryFn: async (): Promise<PartyWithPartnerBranding | null> => {
+      if (!token) return null;
+
+      const { data, error } = await supabase
+        .from('parties')
+        .select(`
+          *,
+          vr_partner:vr_partners(
+            id,
+            name,
+            slug,
+            logo_url,
+            branding_config
+          )
+        `)
+        .eq('share_token', token)
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // No party found with this token
+          console.warn('No party found with share token:', token);
+          return null;
+        }
+        console.error('Error fetching party by share token:', error);
+        throw error;
+      }
+
+      // Transform the response
+      return {
+        party: {
+          ...data,
+          vr_partner: undefined, // Remove nested object from party
+        } as Party,
+        partner: data.vr_partner as PartyWithPartnerBranding['partner'],
+      };
+    },
+    enabled: !!token,
+    // Don't retry on 404
+    retry: (failureCount, error: any) => {
+      if (error?.code === 'PGRST116') return false;
+      return failureCount < 3;
+    },
+  });
+}
+
+// Fetch party with full details by share token (including bookings and guests)
+export function usePartyWithDetailsByShareToken(token: string | undefined) {
+  return useQuery({
+    queryKey: [...partyKeys.byShareToken(token || ''), 'with-details'],
+    queryFn: async () => {
+      if (!token) return null;
+
+      const { data, error } = await supabase
+        .from('parties')
+        .select(`
+          *,
+          vr_partner:vr_partners(
+            id,
+            name,
+            slug,
+            logo_url,
+            branding_config
+          ),
+          bookings:party_bookings(
+            *,
+            vendor:service_vendors(id, name, slug, vendor_type, logo_url, cover_image_url),
+            package:service_packages(id, name, description, guest_price, retail_price, features)
+          ),
+          guests:party_guests(*)
+        `)
+        .eq('share_token', token)
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') {
+          return null;
+        }
+        console.error('Error fetching party with details by share token:', error);
+        throw error;
+      }
+
+      return {
+        party: data as PartyWithDetails,
+        partner: data.vr_partner as PartyWithPartnerBranding['partner'],
+      };
+    },
+    enabled: !!token,
+    retry: (failureCount, error: any) => {
+      if (error?.code === 'PGRST116') return false;
+      return failureCount < 3;
+    },
+  });
+}
+
+// Generate a shareable URL for a party
+export function getPartyShareUrl(shareToken: string): string {
+  // In production, this would be the actual domain
+  const baseUrl = typeof window !== 'undefined'
+    ? window.location.origin
+    : 'https://premieratx.com';
+
+  return `${baseUrl}/p/${shareToken}`;
 }

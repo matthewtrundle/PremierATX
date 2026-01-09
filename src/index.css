@@ -71,124 +71,143 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* ============================================
+       PREMIER ATX - Organic Premium Design System
+       ============================================ */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Core Brand Colors - Warm Charcoal */
+    --premier-ink: 220 13% 13%;           /* #1e2124 - Primary text */
+    --premier-ink-soft: 220 10% 25%;      /* #3a3f44 - Secondary text */
+    --premier-mist: 220 14% 96%;          /* #f4f5f7 - Light backgrounds */
+    --premier-cloud: 0 0% 100%;           /* #ffffff - Cards/surfaces */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Accent - Warm Terracotta (Premier sophistication) */
+    --premier-accent: 16 65% 50%;         /* #d46836 - Primary CTA */
+    --premier-accent-soft: 16 45% 65%;    /* #c9917a - Hover states */
 
-    /* Primary - vibrant green for checkout/success actions */
-    --primary: 142 76% 36%;
+    /* Supporting - Sage (Organic, Austin nature) */
+    --premier-sage: 150 25% 45%;          /* #559573 - Success/nature */
+    --premier-sage-soft: 150 20% 75%;     /* #b5d4c3 - Badges/tags */
+
+    /* Supporting - Warm Sand */
+    --premier-sand: 38 35% 90%;           /* #f5efe6 - Warm neutral bg */
+    --premier-sand-dark: 38 20% 70%;      /* #c4b89f - Borders */
+
+    /* Map to shadcn/ui variables */
+    --background: var(--premier-cloud);
+    --foreground: var(--premier-ink);
+
+    --card: var(--premier-cloud);
+    --card-foreground: var(--premier-ink);
+
+    --popover: var(--premier-cloud);
+    --popover-foreground: var(--premier-ink);
+
+    /* Primary - Warm Terracotta for CTAs */
+    --primary: var(--premier-accent);
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 142 76% 46%;
 
-    /* Light blue from logo for titles and navigation */
-    --brand-blue: 217 91% 60%;
-    --brand-blue-foreground: 0 0% 100%;
+    /* Secondary - Outlined/subtle style */
+    --secondary: var(--premier-mist);
+    --secondary-foreground: var(--premier-ink);
 
-    /* Checkout brand purple (matches cart slide-out) */
-    --checkout: 270 90% 60%;
-    --checkout-foreground: 0 0% 100%;
+    /* Muted - For subtle backgrounds */
+    --muted: var(--premier-sand);
+    --muted-foreground: var(--premier-ink-soft);
 
-    /* Trust blue secondary */
-    --secondary: 217 91% 60%;
-    --secondary-foreground: 0 0% 100%;
+    /* Accent - Same as primary for consistency */
+    --accent: var(--premier-accent);
+    --accent-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 45 93% 58%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    /* Age verification colors */
-    --success: 142 76% 36%;
+    /* Success - Sage green */
+    --success: var(--premier-sage);
     --success-foreground: 0 0% 100%;
-    --danger: 0 84% 60%;
+
+    /* Danger/Destructive */
+    --danger: 0 65% 55%;
     --danger-foreground: 0 0% 100%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Border and Input */
+    --border: var(--premier-sand-dark);
+    --input: var(--premier-sand-dark);
+    --ring: var(--premier-accent);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 142 76% 36%;
+    /* Shadows - Warm tinted */
+    --shadow-sm: 0 1px 3px hsl(220 13% 13% / 0.04);
+    --shadow-md: 0 4px 12px hsl(220 13% 13% / 0.08);
+    --shadow-lg: 0 8px 30px hsl(220 13% 13% / 0.12);
+    --shadow-xl: 0 16px 50px hsl(220 13% 13% / 0.16);
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(217 91% 70%));
-    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(142 76% 46%));
-    --gradient-danger: linear-gradient(135deg, hsl(var(--danger)), hsl(0 84% 70%));
-
-    /* Shadows */
-    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.3);
-    --shadow-card: 0 10px 30px -10px hsl(222.2 84% 4.9% / 0.1);
-    --shadow-floating: 0 20px 40px -15px hsl(222.2 84% 4.9% / 0.15);
+    /* Legacy shadows (for compatibility) */
+    --shadow-glow: 0 0 20px hsl(var(--premier-accent) / 0.2);
+    --shadow-card: var(--shadow-md);
+    --shadow-floating: var(--shadow-lg);
 
     /* Animation */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease-out;
 
-    --radius: 0.5rem;
+    /* Typography */
+    --font-display: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-    --sidebar-background: 0 0% 98%;
+    --radius: 0.75rem;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar */
+    --sidebar-background: var(--premier-mist);
+    --sidebar-foreground: var(--premier-ink);
+    --sidebar-primary: var(--premier-accent);
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: var(--premier-sand);
+    --sidebar-accent-foreground: var(--premier-ink);
+    --sidebar-border: var(--premier-sand-dark);
+    --sidebar-ring: var(--premier-accent);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --premier-ink: 220 14% 96%;
+    --premier-ink-soft: 220 10% 75%;
+    --premier-mist: 220 13% 13%;
+    --premier-cloud: 220 13% 8%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --background: var(--premier-cloud);
+    --foreground: var(--premier-ink);
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --card: 220 13% 12%;
+    --card-foreground: var(--premier-ink);
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --popover: 220 13% 12%;
+    --popover-foreground: var(--premier-ink);
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --primary: var(--premier-accent);
+    --primary-foreground: 0 0% 100%;
 
-    /* Checkout brand purple (dark) */
-    --checkout: 270 90% 60%;
-    --checkout-foreground: 0 0% 100%;
+    --secondary: 220 13% 18%;
+    --secondary-foreground: var(--premier-ink);
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 13% 18%;
+    --muted-foreground: var(--premier-ink-soft);
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: var(--premier-accent);
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 220 13% 20%;
+    --input: 220 13% 20%;
+    --ring: var(--premier-accent);
+
+    --sidebar-background: 220 13% 10%;
+    --sidebar-foreground: var(--premier-ink);
+    --sidebar-primary: var(--premier-accent);
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 220 13% 15%;
+    --sidebar-accent-foreground: var(--premier-ink);
+    --sidebar-border: 220 13% 18%;
+    --sidebar-ring: var(--premier-accent);
   }
 }
 
