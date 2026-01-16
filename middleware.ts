@@ -1,9 +1,9 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { updateSession } from '@/lib/supabase/middleware';
 
 export async function middleware(request: NextRequest) {
-  // Update Supabase session
-  const response = await updateSession(request);
+  const response = NextResponse.next({
+    request,
+  });
 
   // Get hostname for subdomain routing
   const hostname = request.headers.get('host') || '';
@@ -16,10 +16,13 @@ export async function middleware(request: NextRequest) {
   if (!isLocalhost) {
     const subdomain = hostname.split('.')[0];
 
-    // Skip routing for known non-partner subdomains
-    const systemSubdomains = ['www', 'admin', 'api', 'app'];
+    // Skip routing for known non-partner subdomains and the main app
+    const systemSubdomains = ['www', 'admin', 'api', 'app', 'premier-atx'];
 
-    if (subdomain && !systemSubdomains.includes(subdomain)) {
+    // Also skip if this is a Vercel preview deployment (contains random hash)
+    const isVercelPreview = hostname.includes('vercel.app') && subdomain.includes('-');
+
+    if (subdomain && !systemSubdomains.includes(subdomain) && !isVercelPreview) {
       // This is a partner subdomain - rewrite to partner route
       // e.g., acme.premieratx.com -> /partner/acme
       url.pathname = `/partner/${subdomain}${url.pathname}`;
